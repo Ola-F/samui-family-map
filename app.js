@@ -62,11 +62,29 @@
 
 
   // Build categories
+  
+  const CATEGORY_LABELS = {
+    "Base": "בסיס",
+    "Beach": "חופים",
+    "Beach Restaurant / Beach Club": "מסעדות חוף וביץ׳ קלאבים",
+    "Kids Indoor / Playroom": "משחקיות וממוזג",
+    "Playground / Resort Day": "מגרשי משחקים ויום ריזורט",
+    "Nature": "טבע",
+    "Nature / Culture": "טבע ותרבות",
+    "Animals (Ethical)": "חיות (אתרי)",
+    "Animals / Viewpoint": "חיות ותצפיות",
+    "Creative / Educational": "יצירה וחינוכי",
+    "Boat Trip": "שייט וים"
+  };
+  function categoryLabel(cat){
+    return CATEGORY_LABELS[cat] || cat;
+  }
+
   const categories = Array.from(new Set(data.map(x => x.category))).sort((a,b)=>a.localeCompare(b,'he'));
   categories.forEach(c=>{
     const opt = document.createElement('option');
     opt.value = c;
-    opt.textContent = c;
+    opt.textContent = categoryLabel(c);
     elCategory.appendChild(opt);
   });
 
@@ -102,7 +120,7 @@
         <div class="score">${scoreText}</div>
       </div>
       <div class="meta">
-        <div class="chip">קטגוריה: ${escapeHtml(cat)}</div>
+        <div class="chip">קטגוריה: ${escapeHtml(categoryLabel(cat))}</div>
         ${distance ? `<div class="chip">מרחק: ${escapeHtml(distance)}</div>` : ``}
       </div>
       ${tagsHtml}

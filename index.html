@@ -3,16 +3,19 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Koh Samui – Family Explorer (The Gardens)</title>
+  <title>קוסמוי – אטרקציות למשפחה</title>
   <link rel="stylesheet" href="styles.css"/>
 </head>
 <body>
   <header class="header">
     <div class="title">
-      <h1>קוסמוי – אטרקציות למשפחה (מבוסס: The Gardens)</h1>
-      <p>רשימה מסודרת לפי קטגוריות + ציון ⭐️ + מפה אינטראקטיבית (הקלקה על מקום מעדכנת את המפה).</p>
+      <h1>קוסמוי – אטרקציות למשפחה</h1>
     </div>
-    <div class="controls">
+  </header>
+
+  <section class="filters">
+    <div class="filtersRow mainFilters">
+      <span class="filtersLabel">סינון:</span>
       <input id="search" type="search" placeholder="חיפוש מקום / מילה בתיאור…"/>
       <select id="category">
         <option value="all">כל הקטגוריות</option>
@@ -25,20 +28,18 @@
       </select>
       <button id="reset">איפוס</button>
     </div>
-  </header>
 
-  <section class="smart">
-    <div class="tagFilters">
-      <span class="label">סינון לפי תגיות:</span>
+    <div class="filtersRow tagsFilters">
+      <span class="filtersLabel">תגיות:</span>
       <label><input type="checkbox" class="tagChk" value="ממוזג"/> ממוזג</label>
       <label><input type="checkbox" class="tagChk" value="טוב ליום גשם"/> טוב ליום גשם</label>
       <label><input type="checkbox" class="tagChk" value="מתאים לעגלה"/> מתאים לעגלה</label>
       <label><input type="checkbox" class="tagChk" value="יום קצר"/> יום קצר</label>
       <label><input type="checkbox" class="tagChk" value="יום ארוך"/> יום ארוך</label>
     </div>
-    <div class="dayBuilder">
-      <span class="label">בנה לי יום (2–4 שעות):</span>
-      <select id="dayMode">
+
+    <div class="filtersRow dayBuilderRow">
+      <span class="filtersLabel">בנה לי יום (2–4 שעות):</span> <select id="dayMode">
         <option value="any">כללי</option>
         <option value="hot">חם מאוד (עדיפות מים/ממוזג)</option>
         <option value="rain">גשום (ממוזג/Indoor)</option>
@@ -51,17 +52,17 @@
       </select>
       <button id="buildDay">צור מסלול</button>
       <button id="clearDay" class="secondary">נקה</button>
-      <div id="dayPlan" class="dayPlan" aria-live="polite"></div>
-      <p class="hint">טיפ: המסלול הוא הצעה גמישה. הקלקה על פריט במסלול תעדכן את המפה.</p>
+      <div id="dayPlan" class="dayPlan" aria-live="polite">
     </div>
   </section>
+
 
 
   <main class="layout">
     <aside class="sidebar">
       <div class="summary">
         <div><strong>טיפ שימושי:</strong> התחילי מ־⭐️5 לשגרה, ושמרי את ⭐️4 ל״ימי גיוון״.</div>
-        <div class="small">זמני נסיעה הם הערכה מה־The Gardens (Bang Rak), משתנים לפי שעה ותנועה.</div>
+        <div class="small">זמני נסיעה הם הערכה מאזור Bang Rak (הקרוב למקום הלינה), משתנים לפי שעה ותנועה.</div>
       </div>
       <div id="list" class="list" aria-live="polite"></div>
     </aside>
