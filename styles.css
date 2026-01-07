@@ -84,6 +84,7 @@ a:hover{text-decoration:underline}
   background:#ffffff;
 }
 .filtersInner{
+  align-items:end;
   max-width:1200px;
   margin:0 auto;
   padding:14px 16px;
@@ -200,8 +201,9 @@ a:hover{text-decoration:underline}
 }
 .cardTop{
   display:flex;
-  gap:12px;
-  padding:14px;
+  flex-direction:row-reverse;
+  gap:14px;
+  padding:16px;
   align-items:flex-start;
 }
 .thumb{
@@ -349,7 +351,8 @@ a:hover{text-decoration:underline}
 }
 
 @media (max-width: 980px){
-  .filtersInner{grid-template-columns: 1fr 1fr; }
+  .filtersInner{
+  align-items:end;grid-template-columns: 1fr 1fr; }
   .filtersLabel{grid-column:1 / -1; padding-bottom:0}
   .tagsField{grid-column:1 / -1}
   .buildField{grid-column:1 / -1}
@@ -364,3 +367,6 @@ a:hover{text-decoration:underline}
 @media (prefers-reduced-motion: reduce){
   *{scroll-behavior:auto !important; transition:none !important}
 }
+
+.resetField{min-width:120px}
+.resetField .btn{width:100%}

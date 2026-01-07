@@ -6,8 +6,8 @@
     aircon: "ממוזג",
     rain: "טוב ליום גשם",
     stroller: "מתאים לעגלה",
-    short: "יום קצר",
-    long: "יום ארוך",
+    drive_under_20: "עד 20 ד׳ נסיעה",
+    drive_over_20: "מעל 20 ד׳ נסיעה",
     water: "מים/ים",
     food: "אוכל",
     nature: "טבע",
@@ -15,7 +15,7 @@
     animals: "חיות"
   };
 
-  const TAG_ORDER = ["aircon","rain","short","long","stroller","water","food","nature","animals","creative"];
+  const TAG_ORDER = ["drive_under_20","drive_over_20","aircon","rain","stroller","water","food","nature","animals","creative"];
 
   const elSearch = document.getElementById("search");
   const elCategory = document.getElementById("category");

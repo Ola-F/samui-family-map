@@ -15,12 +15,12 @@
       <div class="titleWrap">
         <div class="titleIcon" aria-hidden="true">🧭</div>
         <div>
-          <h1 class="title">קוסמוי – אטרקציות למשפחה</h1>
-          <div class="subtitle">מסונן למשפחות עם ילדים · לפי קטגוריות, ציון ותגיות · לחיצה על מקום מעדכנת את המפה</div>
+          <h1 class="title"><span class="titleTop">קוסמוי</span><span class="titleBottom">אטרקציות למשפחות</span></h1>
+          <ul class="subpoints" aria-label="הנחיות שימוש">
+            <li>לחיצה על מקום מעדכנת את המפה.</li>
+            <li>זמני נסיעה הם הערכה מאזור Bang Rak.</li>
+          </ul>
         </div>
-      </div>
-      <div class="topActions">
-        <button id="resetBtn" class="btn btnGhost" type="button">איפוס</button>
       </div>
     </div>
   </header>
@@ -47,6 +47,11 @@
           <option value="4">⭐️ 4 ומעלה</option>
           <option value="3">⭐️ 3 ומעלה</option>
         </select>
+      </div>
+
+      <div class="field resetField">
+        <label class="fieldLabel" aria-hidden="true">&nbsp;</label>
+        <button id="resetBtn" class="btn btnGhost" type="button">איפוס</button>
       </div>
 
       <div class="field tagsField">
@@ -115,25 +120,6 @@
   <script>
     window.ATTRACTIONS = [
   {
-    "name": "The Gardens by Samui Beach Properties (Base)",
-    "category": "Base",
-    "why": "מיקום הבסיס שלכם בבנג ראק (Bang Rak).",
-    "distance_min": "0 דק׳",
-    "reviews": "בסיס מרכזי לצפון־מזרח האי, נוח לבופוט, צ׳ואנג מון וצ׳אוונג.",
-    "link": "https://www.booking.com/Share-rpdDAdX",
-    "score": null,
-    "category_he": "בסיס",
-    "icon": "📍",
-    "tags": [],
-    "images": [
-      "https://source.unsplash.com/featured/800x500/?koh+samui+resort&sig=1",
-      "https://source.unsplash.com/featured/800x500/?koh+samui+resort&sig=2",
-      "https://source.unsplash.com/featured/800x500/?koh+samui+resort&sig=3",
-      "https://source.unsplash.com/featured/800x500/?koh+samui+resort&sig=4",
-      "https://source.unsplash.com/featured/800x500/?koh+samui+resort&sig=5"
-    ]
-  },
-  {
     "name": "Bang Rak Beach",
     "category": "Beach",
     "why": "חוף קרוב מאוד לקפיצות קצרות, שקיעות וימים רגועים.",
@@ -141,19 +127,18 @@
     "reviews": "פרקטי ונוח עם ילדים; לא החוף הכי ‘גלויה’ אבל קרוב ושימושי.",
     "link": "https://maps.google.com/?q=Bang+Rak+Beach+Koh+Samui",
     "score": 4,
-    "category_he": "חוף",
+    "category_he": "חופים",
     "icon": "🏖️",
     "tags": [
-      "water",
-      "short",
-      "stroller"
+      "drive_under_20",
+      "stroller",
+      "water"
     ],
     "images": [
-      "https://source.unsplash.com/featured/800x500/?koh+samui+beach&sig=6",
-      "https://source.unsplash.com/featured/800x500/?koh+samui+beach&sig=7",
-      "https://source.unsplash.com/featured/800x500/?koh+samui+beach&sig=8",
-      "https://source.unsplash.com/featured/800x500/?koh+samui+beach&sig=9",
-      "https://source.unsplash.com/featured/800x500/?koh+samui+beach&sig=10"
+      "https://picsum.photos/seed/1138715138/800/500",
+      "https://picsum.photos/seed/1138715139/800/500",
+      "https://picsum.photos/seed/1138715140/800/500",
+      "https://picsum.photos/seed/1138715141/800/500"
     ]
   },
   {
@@ -164,19 +149,18 @@
     "reviews": "אהוב על משפחות; נעים לשלב חוף עם אוכל וטיול קצר.",
     "link": "https://maps.google.com/?q=Bophut+Beach+Koh+Samui",
     "score": 5,
-    "category_he": "חוף",
+    "category_he": "חופים",
     "icon": "🏖️",
     "tags": [
-      "water",
-      "short",
-      "stroller"
+      "drive_under_20",
+      "stroller",
+      "water"
     ],
     "images": [
-      "https://source.unsplash.com/featured/800x500/?fisherman+village+koh+samui&sig=11",
-      "https://source.unsplash.com/featured/800x500/?fisherman+village+koh+samui&sig=12",
-      "https://source.unsplash.com/featured/800x500/?fisherman+village+koh+samui&sig=13",
-      "https://source.unsplash.com/featured/800x500/?fisherman+village+koh+samui&sig=14",
-      "https://source.unsplash.com/featured/800x500/?fisherman+village+koh+samui&sig=15"
+      "https://picsum.photos/seed/4101238919/800/500",
+      "https://picsum.photos/seed/4101238920/800/500",
+      "https://picsum.photos/seed/4101238921/800/500",
+      "https://picsum.photos/seed/4101238922/800/500"
     ]
   },
   {
@@ -187,19 +171,18 @@
     "reviews": "נחשב רגוע ובטיחותי יותר לילדים לעומת חופים פתוחים.",
     "link": "https://maps.google.com/?q=Choeng+Mon+Beach+Koh+Samui",
     "score": 5,
-    "category_he": "חוף",
+    "category_he": "חופים",
     "icon": "🏖️",
     "tags": [
-      "water",
-      "short",
-      "stroller"
+      "drive_under_20",
+      "stroller",
+      "water"
     ],
     "images": [
-      "https://source.unsplash.com/featured/800x500/?koh+samui+beach&sig=16",
-      "https://source.unsplash.com/featured/800x500/?koh+samui+beach&sig=17",
-      "https://source.unsplash.com/featured/800x500/?koh+samui+beach&sig=18",
-      "https://source.unsplash.com/featured/800x500/?koh+samui+beach&sig=19",
-      "https://source.unsplash.com/featured/800x500/?koh+samui+beach&sig=20"
+      "https://picsum.photos/seed/2118058727/800/500",
+      "https://picsum.photos/seed/2118058728/800/500",
+      "https://picsum.photos/seed/2118058729/800/500",
+      "https://picsum.photos/seed/2118058730/800/500"
     ]
   },
   {
@@ -210,19 +193,18 @@
     "reviews": "מתאים לימים רגועים עם מרחב – פחות אטרקציות מסביב.",
     "link": "https://maps.google.com/?q=Mae+Nam+Beach+Koh+Samui",
     "score": 4,
-    "category_he": "חוף",
+    "category_he": "חופים",
     "icon": "🏖️",
     "tags": [
-      "water",
-      "short",
-      "stroller"
+      "drive_under_20",
+      "stroller",
+      "water"
     ],
     "images": [
-      "https://source.unsplash.com/featured/800x500/?koh+samui+beach&sig=21",
-      "https://source.unsplash.com/featured/800x500/?koh+samui+beach&sig=22",
-      "https://source.unsplash.com/featured/800x500/?koh+samui+beach&sig=23",
-      "https://source.unsplash.com/featured/800x500/?koh+samui+beach&sig=24",
-      "https://source.unsplash.com/featured/800x500/?koh+samui+beach&sig=25"
+      "https://picsum.photos/seed/2141859429/800/500",
+      "https://picsum.photos/seed/2141859430/800/500",
+      "https://picsum.photos/seed/2141859431/800/500",
+      "https://picsum.photos/seed/2141859432/800/500"
     ]
   },
   {
@@ -233,20 +215,18 @@
     "reviews": "שקט מאוד; מומלץ לבדוק תנאי ים/גאות ביום ההגעה.",
     "link": "https://maps.google.com/?q=Lipa+Noi+Beach+Koh+Samui",
     "score": 5,
-    "category_he": "חוף",
+    "category_he": "חופים",
     "icon": "🏖️",
     "tags": [
-      "water",
-      "short",
+      "drive_over_20",
       "stroller",
-      "long"
+      "water"
     ],
     "images": [
-      "https://source.unsplash.com/featured/800x500/?koh+samui+beach&sig=26",
-      "https://source.unsplash.com/featured/800x500/?koh+samui+beach&sig=27",
-      "https://source.unsplash.com/featured/800x500/?koh+samui+beach&sig=28",
-      "https://source.unsplash.com/featured/800x500/?koh+samui+beach&sig=29",
-      "https://source.unsplash.com/featured/800x500/?koh+samui+beach&sig=30"
+      "https://picsum.photos/seed/2668394859/800/500",
+      "https://picsum.photos/seed/2668394860/800/500",
+      "https://picsum.photos/seed/2668394861/800/500",
+      "https://picsum.photos/seed/2668394862/800/500"
     ]
   },
   {
@@ -257,229 +237,233 @@
     "reviews": "המון אנשים מתלהבים מהנוף; תנאי ים יכולים להשתנות ולכן פחות אידיאלי כשגרה לילדים קטנים.",
     "link": "https://maps.google.com/?q=Crystal+Bay+Silver+Beach+Koh+Samui",
     "score": 4,
-    "category_he": "חוף",
+    "category_he": "חופים",
     "icon": "🏖️",
     "tags": [
-      "water",
-      "short",
-      "stroller"
+      "drive_over_20",
+      "stroller",
+      "water"
     ],
     "images": [
-      "https://source.unsplash.com/featured/800x500/?koh+samui+beach&sig=31",
-      "https://source.unsplash.com/featured/800x500/?koh+samui+beach&sig=32",
-      "https://source.unsplash.com/featured/800x500/?koh+samui+beach&sig=33",
-      "https://source.unsplash.com/featured/800x500/?koh+samui+beach&sig=34",
-      "https://source.unsplash.com/featured/800x500/?koh+samui+beach&sig=35"
+      "https://picsum.photos/seed/924736905/800/500",
+      "https://picsum.photos/seed/924736906/800/500",
+      "https://picsum.photos/seed/924736907/800/500",
+      "https://picsum.photos/seed/924736908/800/500"
     ]
   },
   {
     "name": "Chi Samui (Bang Rak)",
-    "category": "Beach Restaurant / Beach Club",
+    "category": "BeachFood",
     "why": "מסעדה/ביץ׳ קלאב עם חוף ובריכה – נוח למשפחות.",
     "distance_min": "6–8 דק׳",
     "reviews": "נוח ביום; אפשר לשלב אוכל והתרעננות בבריכה.",
     "link": "https://maps.google.com/?q=Chi+Samui+Bang+Rak",
     "score": 5,
-    "category_he": "Beach Restaurant / Beach Club",
-    "icon": "✨",
+    "category_he": "מסעדות חוף",
+    "icon": "🍽️",
     "tags": [
-      "short"
+      "drive_under_20",
+      "food",
+      "water"
     ],
     "images": [
-      "https://source.unsplash.com/featured/800x500/?koh+samui+resort&sig=36",
-      "https://source.unsplash.com/featured/800x500/?koh+samui+resort&sig=37",
-      "https://source.unsplash.com/featured/800x500/?koh+samui+resort&sig=38",
-      "https://source.unsplash.com/featured/800x500/?koh+samui+resort&sig=39",
-      "https://source.unsplash.com/featured/800x500/?koh+samui+resort&sig=40"
+      "https://picsum.photos/seed/1442008318/800/500",
+      "https://picsum.photos/seed/1442008319/800/500",
+      "https://picsum.photos/seed/1442008320/800/500",
+      "https://picsum.photos/seed/1442008321/800/500"
     ]
   },
   {
     "name": "CoCo Tam’s (Bophut)",
-    "category": "Beach Restaurant / Beach Club",
+    "category": "BeachFood",
     "why": "אווירה על החול בבופוט – מעולה לשקיעה/ערב מוקדם.",
     "distance_min": "10–12 דק׳",
     "reviews": "פופולרי מאוד; בערב יכול להיות עמוס ורועש יותר – עם ילדים עדיף להגיע מוקדם.",
     "link": "https://maps.google.com/?q=CoCo+Tam's+Bophut+Koh+Samui",
     "score": 5,
-    "category_he": "Beach Restaurant / Beach Club",
-    "icon": "✨",
+    "category_he": "מסעדות חוף",
+    "icon": "🍽️",
     "tags": [
-      "short"
+      "drive_under_20",
+      "food",
+      "water"
     ],
     "images": [
-      "https://source.unsplash.com/featured/800x500/?fisherman+village+koh+samui&sig=41",
-      "https://source.unsplash.com/featured/800x500/?fisherman+village+koh+samui&sig=42",
-      "https://source.unsplash.com/featured/800x500/?fisherman+village+koh+samui&sig=43",
-      "https://source.unsplash.com/featured/800x500/?fisherman+village+koh+samui&sig=44",
-      "https://source.unsplash.com/featured/800x500/?fisherman+village+koh+samui&sig=45"
+      "https://picsum.photos/seed/1884653005/800/500",
+      "https://picsum.photos/seed/1884653006/800/500",
+      "https://picsum.photos/seed/1884653007/800/500",
+      "https://picsum.photos/seed/1884653008/800/500"
     ]
   },
   {
     "name": "The Shack",
-    "category": "Beach Restaurant / Beach Club",
+    "category": "BeachFood",
     "why": "קז׳ואל, ‘בלי פוזה’ – נעים עם ילדים.",
     "distance_min": "~15 דק׳",
     "reviews": "בחירה טובה כשמחפשים אווירה רגועה ואוכל טוב ליד הים.",
     "link": "https://maps.google.com/?q=The+Shack+Koh+Samui",
     "score": 4,
-    "category_he": "Beach Restaurant / Beach Club",
-    "icon": "✨",
+    "category_he": "מסעדות חוף",
+    "icon": "🍽️",
     "tags": [
-      "short"
+      "drive_under_20",
+      "food",
+      "water"
     ],
     "images": [
-      "https://source.unsplash.com/featured/800x500/?koh+samui+resort&sig=46",
-      "https://source.unsplash.com/featured/800x500/?koh+samui+resort&sig=47",
-      "https://source.unsplash.com/featured/800x500/?koh+samui+resort&sig=48",
-      "https://source.unsplash.com/featured/800x500/?koh+samui+resort&sig=49",
-      "https://source.unsplash.com/featured/800x500/?koh+samui+resort&sig=50"
+      "https://picsum.photos/seed/2911014356/800/500",
+      "https://picsum.photos/seed/2911014357/800/500",
+      "https://picsum.photos/seed/2911014358/800/500",
+      "https://picsum.photos/seed/2911014359/800/500"
     ]
   },
   {
     "name": "KohCo Beach Club",
-    "category": "Beach Restaurant / Beach Club",
+    "category": "BeachFood",
     "why": "יום רגוע על הים – אופציה לשבת בנוחות.",
     "distance_min": "~15 דק׳",
     "reviews": "מתואר כמתאים למשפחות; מומלץ לבדוק עומסים בשעות שיא.",
     "link": "https://maps.google.com/?q=KohCo+Beach+Club+Koh+Samui",
     "score": 4,
-    "category_he": "Beach Restaurant / Beach Club",
-    "icon": "✨",
+    "category_he": "מסעדות חוף",
+    "icon": "🍽️",
     "tags": [
-      "short"
+      "drive_under_20",
+      "food",
+      "water"
     ],
     "images": [
-      "https://source.unsplash.com/featured/800x500/?koh+samui+resort&sig=51",
-      "https://source.unsplash.com/featured/800x500/?koh+samui+resort&sig=52",
-      "https://source.unsplash.com/featured/800x500/?koh+samui+resort&sig=53",
-      "https://source.unsplash.com/featured/800x500/?koh+samui+resort&sig=54",
-      "https://source.unsplash.com/featured/800x500/?koh+samui+resort&sig=55"
+      "https://picsum.photos/seed/3833266568/800/500",
+      "https://picsum.photos/seed/3833266569/800/500",
+      "https://picsum.photos/seed/3833266570/800/500",
+      "https://picsum.photos/seed/3833266571/800/500"
     ]
   },
   {
     "name": "Hacienda Beach Restaurant",
-    "category": "Beach Restaurant / Beach Club",
+    "category": "BeachFood",
     "why": "אוכל פשוט וטוב על החוף – מתאים למשפחות.",
     "distance_min": "~12 דק׳",
     "reviews": "לא יומרני; פתרון יציב ונוח.",
     "link": "https://maps.google.com/?q=Hacienda+Beach+Restaurant+Koh+Samui",
     "score": 4,
-    "category_he": "Beach Restaurant / Beach Club",
-    "icon": "✨",
+    "category_he": "מסעדות חוף",
+    "icon": "🍽️",
     "tags": [
-      "short"
+      "drive_under_20",
+      "food",
+      "water"
     ],
     "images": [
-      "https://source.unsplash.com/featured/800x500/?koh+samui+resort&sig=56",
-      "https://source.unsplash.com/featured/800x500/?koh+samui+resort&sig=57",
-      "https://source.unsplash.com/featured/800x500/?koh+samui+resort&sig=58",
-      "https://source.unsplash.com/featured/800x500/?koh+samui+resort&sig=59",
-      "https://source.unsplash.com/featured/800x500/?koh+samui+resort&sig=60"
+      "https://picsum.photos/seed/2843221750/800/500",
+      "https://picsum.photos/seed/2843221751/800/500",
+      "https://picsum.photos/seed/2843221752/800/500",
+      "https://picsum.photos/seed/2843221753/800/500"
     ]
   },
   {
     "name": "Kids Club – Fisherman’s Village (Bophut)",
-    "category": "Kids Indoor / Playroom",
+    "category": "Kids",
     "why": "משחקייה/קלאב ילדים באזור הבילוי של בופוט – מעולה להפסקה ממוזגת.",
     "distance_min": "~10 דק׳",
     "reviews": "מתאים במיוחד לגילאי גן; שווה לשלב עם טיול קצר ב-Fisherman’s Village.",
     "link": "https://maps.google.com/?q=Kids+Club+Fisherman's+Village+Koh+Samui",
     "score": 5,
-    "category_he": "Kids Indoor / Playroom",
-    "icon": "✨",
+    "category_he": "משחקיות",
+    "icon": "🧸",
     "tags": [
-      "short"
+      "aircon",
+      "drive_under_20"
     ],
     "images": [
-      "https://source.unsplash.com/featured/800x500/?fisherman+village+koh+samui&sig=61",
-      "https://source.unsplash.com/featured/800x500/?fisherman+village+koh+samui&sig=62",
-      "https://source.unsplash.com/featured/800x500/?fisherman+village+koh+samui&sig=63",
-      "https://source.unsplash.com/featured/800x500/?fisherman+village+koh+samui&sig=64",
-      "https://source.unsplash.com/featured/800x500/?fisherman+village+koh+samui&sig=65"
+      "https://picsum.photos/seed/3803452569/800/500",
+      "https://picsum.photos/seed/3803452570/800/500",
+      "https://picsum.photos/seed/3803452571/800/500",
+      "https://picsum.photos/seed/3803452572/800/500"
     ]
   },
   {
     "name": "Clever Kids Playroom (Mae Nam)",
-    "category": "Kids Indoor / Playroom",
+    "category": "Kids",
     "why": "משחקייה נישתית לשגרה של חודש – כיף לכמה שעות.",
     "distance_min": "~15–20 דק׳",
     "reviews": "הורים מחפשים מקום רגוע/נקי; פחות ‘פארק ענק’, יותר שימושי ליומיום.",
     "link": "https://maps.google.com/?q=Clever+Kids+Playroom+Mae+Nam+Koh+Samui",
     "score": 4,
-    "category_he": "Kids Indoor / Playroom",
-    "icon": "✨",
+    "category_he": "משחקיות",
+    "icon": "🧸",
     "tags": [
-      "short"
+      "aircon",
+      "drive_under_20"
     ],
     "images": [
-      "https://source.unsplash.com/featured/800x500/?koh+samui+resort&sig=66",
-      "https://source.unsplash.com/featured/800x500/?koh+samui+resort&sig=67",
-      "https://source.unsplash.com/featured/800x500/?koh+samui+resort&sig=68",
-      "https://source.unsplash.com/featured/800x500/?koh+samui+resort&sig=69",
-      "https://source.unsplash.com/featured/800x500/?koh+samui+resort&sig=70"
+      "https://picsum.photos/seed/1439646414/800/500",
+      "https://picsum.photos/seed/1439646415/800/500",
+      "https://picsum.photos/seed/1439646416/800/500",
+      "https://picsum.photos/seed/1439646417/800/500"
     ]
   },
   {
     "name": "Tesco Lotus – Indoor Playground",
-    "category": "Kids Indoor / Playroom",
+    "category": "Kids",
     "why": "פתרון מהיר לשעה–שעתיים (שילוב עם סופר/קניות).",
     "distance_min": "~15–20 דק׳",
     "reviews": "בסיסי אבל יעיל בימים חמים/גשומים.",
     "link": "https://maps.google.com/?q=Tesco+Lotus+Koh+Samui+playground",
     "score": 3,
-    "category_he": "Kids Indoor / Playroom",
-    "icon": "✨",
+    "category_he": "משחקיות",
+    "icon": "🧸",
     "tags": [
-      "short"
+      "aircon",
+      "drive_under_20"
     ],
     "images": [
-      "https://source.unsplash.com/featured/800x500/?koh+samui+resort&sig=71",
-      "https://source.unsplash.com/featured/800x500/?koh+samui+resort&sig=72",
-      "https://source.unsplash.com/featured/800x500/?koh+samui+resort&sig=73",
-      "https://source.unsplash.com/featured/800x500/?koh+samui+resort&sig=74",
-      "https://source.unsplash.com/featured/800x500/?koh+samui+resort&sig=75"
+      "https://picsum.photos/seed/3593780847/800/500",
+      "https://picsum.photos/seed/3593780848/800/500",
+      "https://picsum.photos/seed/3593780849/800/500",
+      "https://picsum.photos/seed/3593780850/800/500"
     ]
   },
   {
     "name": "Central Festival Samui – Kids Area",
-    "category": "Kids Indoor / Playroom",
+    "category": "Kids",
     "why": "קניון ממוזג עם אזורי ילדים – טוב כשצריך מזגן וקניות.",
     "distance_min": "~20 דק׳",
     "reviews": "נוח; מומלץ לבדוק אילו מתקנים פעילים ביום ההגעה.",
     "link": "https://maps.google.com/?q=Central+Festival+Samui+kids+playground",
     "score": 4,
-    "category_he": "Kids Indoor / Playroom",
-    "icon": "✨",
+    "category_he": "משחקיות",
+    "icon": "🧸",
     "tags": [
-      "short"
+      "aircon",
+      "drive_under_20"
     ],
     "images": [
-      "https://source.unsplash.com/featured/800x500/?koh+samui+resort&sig=76",
-      "https://source.unsplash.com/featured/800x500/?koh+samui+resort&sig=77",
-      "https://source.unsplash.com/featured/800x500/?koh+samui+resort&sig=78",
-      "https://source.unsplash.com/featured/800x500/?koh+samui+resort&sig=79",
-      "https://source.unsplash.com/featured/800x500/?koh+samui+resort&sig=80"
+      "https://picsum.photos/seed/3924268324/800/500",
+      "https://picsum.photos/seed/3924268325/800/500",
+      "https://picsum.photos/seed/3924268326/800/500",
+      "https://picsum.photos/seed/3924268327/800/500"
     ]
   },
   {
     "name": "Holiday Inn Resort Samui – Playground",
-    "category": "Playground / Resort Day",
+    "category": "Kids",
     "why": "מגרש משחקים בריזורט – אופציה ליום ריזורט/בילוי נינוח.",
     "distance_min": "~12–15 דק׳",
     "reviews": "שווה לבדוק מדיניות כניסה/Day pass לפני שמגיעים.",
     "link": "https://maps.google.com/?q=Holiday+Inn+Resort+Koh+Samui+playground",
     "score": 4,
-    "category_he": "Playground / Resort Day",
-    "icon": "✨",
+    "category_he": "משחקיות",
+    "icon": "🧸",
     "tags": [
-      "short"
+      "aircon",
+      "drive_under_20"
     ],
     "images": [
-      "https://source.unsplash.com/featured/800x500/?koh+samui+resort&sig=81",
-      "https://source.unsplash.com/featured/800x500/?koh+samui+resort&sig=82",
-      "https://source.unsplash.com/featured/800x500/?koh+samui+resort&sig=83",
-      "https://source.unsplash.com/featured/800x500/?koh+samui+resort&sig=84",
-      "https://source.unsplash.com/featured/800x500/?koh+samui+resort&sig=85"
+      "https://picsum.photos/seed/501287510/800/500",
+      "https://picsum.photos/seed/501287511/800/500",
+      "https://picsum.photos/seed/501287512/800/500",
+      "https://picsum.photos/seed/501287513/800/500"
     ]
   },
   {
@@ -490,83 +474,85 @@
     "reviews": "יפה, אבל עלול להיות חלק – נעליים סגורות והשגחה צמודה.",
     "link": "https://maps.google.com/?q=Na+Muang+Waterfall+Koh+Samui",
     "score": 4,
-    "category_he": "Nature",
-    "icon": "✨",
-    "tags": [],
+    "category_he": "טבע",
+    "icon": "🌿",
+    "tags": [
+      "drive_over_20",
+      "nature"
+    ],
     "images": [
-      "https://source.unsplash.com/featured/800x500/?waterfall+thailand&sig=86",
-      "https://source.unsplash.com/featured/800x500/?waterfall+thailand&sig=87",
-      "https://source.unsplash.com/featured/800x500/?waterfall+thailand&sig=88",
-      "https://source.unsplash.com/featured/800x500/?waterfall+thailand&sig=89",
-      "https://source.unsplash.com/featured/800x500/?waterfall+thailand&sig=90"
+      "https://picsum.photos/seed/1542944604/800/500",
+      "https://picsum.photos/seed/1542944605/800/500",
+      "https://picsum.photos/seed/1542944606/800/500",
+      "https://picsum.photos/seed/1542944607/800/500"
     ]
   },
   {
     "name": "Secret Buddha Garden (Ta Nim)",
-    "category": "Nature / Culture",
+    "category": "Nature",
     "why": "גן פסלים מסתורי בהרים – חוויה סקרנית לילדים.",
     "distance_min": "~50–60 דק׳",
     "reviews": "מעניין ומיוחד; גישה/שבילים יכולים להיות תלולים.",
     "link": "https://maps.google.com/?q=Secret+Buddha+Garden+Koh+Samui",
     "score": 4,
-    "category_he": "Nature / Culture",
-    "icon": "✨",
+    "category_he": "טבע",
+    "icon": "🌿",
     "tags": [
-      "long"
+      "drive_over_20",
+      "nature"
     ],
     "images": [
-      "https://source.unsplash.com/featured/800x500/?koh+samui+resort&sig=91",
-      "https://source.unsplash.com/featured/800x500/?koh+samui+resort&sig=92",
-      "https://source.unsplash.com/featured/800x500/?koh+samui+resort&sig=93",
-      "https://source.unsplash.com/featured/800x500/?koh+samui+resort&sig=94",
-      "https://source.unsplash.com/featured/800x500/?koh+samui+resort&sig=95"
+      "https://picsum.photos/seed/3143335393/800/500",
+      "https://picsum.photos/seed/3143335394/800/500",
+      "https://picsum.photos/seed/3143335395/800/500",
+      "https://picsum.photos/seed/3143335396/800/500"
     ]
   },
   {
     "name": "Samui Elephant Sanctuary",
-    "category": "Animals (Ethical)",
+    "category": "Animals",
     "why": "מפגש פילים עם דגש על הצלה וללא רכיבה/מופעים (לפי הפרסומים).",
     "distance_min": "~15–35 דק׳",
     "reviews": "מומלץ למשפחות שמחפשות חוויה אתית וחינוכית; מומלץ להזמין מראש.",
     "link": "https://www.samuielephantsanctuary.org",
     "score": 5,
-    "category_he": "Animals (Ethical)",
-    "icon": "✨",
+    "category_he": "חיות",
+    "icon": "🐘",
     "tags": [
-      "short"
+      "animals",
+      "drive_over_20"
     ],
     "images": [
-      "https://source.unsplash.com/featured/800x500/?elephant+sanctuary+thailand&sig=96",
-      "https://source.unsplash.com/featured/800x500/?elephant+sanctuary+thailand&sig=97",
-      "https://source.unsplash.com/featured/800x500/?elephant+sanctuary+thailand&sig=98",
-      "https://source.unsplash.com/featured/800x500/?elephant+sanctuary+thailand&sig=99",
-      "https://source.unsplash.com/featured/800x500/?elephant+sanctuary+thailand&sig=100"
+      "https://picsum.photos/seed/3604000086/800/500",
+      "https://picsum.photos/seed/3604000087/800/500",
+      "https://picsum.photos/seed/3604000088/800/500",
+      "https://picsum.photos/seed/3604000089/800/500"
     ]
   },
   {
     "name": "Paradise Park Farm",
-    "category": "Animals / Viewpoint",
+    "category": "Animals",
     "why": "חיות, נוף ונקודות צילום – יום גיוון.",
     "distance_min": "~60 דק׳",
     "reviews": "כדאי לקרוא ביקורות עדכניות ולהחליט לפי הערכים שלכם לגבי רווחת בעלי חיים.",
     "link": "https://maps.google.com/?q=Paradise+Park+Farm+Koh+Samui",
     "score": 3,
-    "category_he": "Animals / Viewpoint",
-    "icon": "✨",
+    "category_he": "חיות",
+    "icon": "🐘",
     "tags": [
-      "long"
+      "animals",
+      "drive_over_20"
     ],
     "images": [
-      "https://source.unsplash.com/featured/800x500/?koh+samui+resort&sig=101",
-      "https://source.unsplash.com/featured/800x500/?koh+samui+resort&sig=102",
-      "https://source.unsplash.com/featured/800x500/?koh+samui+resort&sig=103",
-      "https://source.unsplash.com/featured/800x500/?koh+samui+resort&sig=104",
-      "https://source.unsplash.com/featured/800x500/?koh+samui+resort&sig=105"
+      "https://picsum.photos/seed/1773724056/800/500",
+      "https://picsum.photos/seed/1773724057/800/500",
+      "https://picsum.photos/seed/1773724058/800/500",
+      "https://picsum.photos/seed/1773724059/800/500"
     ]
   },
   {
     "name": "Ang Thong National Marine Park (Day Trip)",
-    "category": "Boat Trip",
+    "category": "Boat",
     "why": "יום שייט לאיים ונוף מרשים – מתאים כ’יום מיוחד’.",
     "distance_min": "~10–25 דק׳ למזח + יום שייט",
     "reviews": "יום ארוך; עם ילדים קטנים מומלץ לבחור ספק משפחתי/רגוע ולצמצם פעילויות מאתגרות.",
@@ -575,35 +561,35 @@
     "category_he": "שייט",
     "icon": "🚤",
     "tags": [
-      "water",
-      "long",
-      "short"
+      "drive_over_20",
+      "water"
     ],
     "images": [
-      "https://source.unsplash.com/featured/800x500/?ang+thong+marine+park&sig=106",
-      "https://source.unsplash.com/featured/800x500/?ang+thong+marine+park&sig=107",
-      "https://source.unsplash.com/featured/800x500/?ang+thong+marine+park&sig=108",
-      "https://source.unsplash.com/featured/800x500/?ang+thong+marine+park&sig=109",
-      "https://source.unsplash.com/featured/800x500/?ang+thong+marine+park&sig=110"
+      "https://picsum.photos/seed/668235465/800/500",
+      "https://picsum.photos/seed/668235466/800/500",
+      "https://picsum.photos/seed/668235467/800/500",
+      "https://picsum.photos/seed/668235468/800/500"
     ]
   },
   {
     "name": "Tropical Kaleidoscope",
-    "category": "Creative / Educational",
+    "category": "Kids",
     "why": "חוויה נישתית צבעונית/אמנותית – מתאימה לילדים סקרנים.",
     "distance_min": "~25–30 דק׳ (הערכה)",
     "reviews": "לא אטרקציה ‘קלאסית’; תלוי באופי הילדים ובמה שמוצע באותו יום.",
     "link": "https://maps.google.com/?q=Tropical+Kaleidoscope+Koh+Samui",
     "score": 4,
-    "category_he": "Creative / Educational",
-    "icon": "✨",
-    "tags": [],
+    "category_he": "משחקיות",
+    "icon": "🧸",
+    "tags": [
+      "creative",
+      "drive_over_20"
+    ],
     "images": [
-      "https://source.unsplash.com/featured/800x500/?koh+samui+resort&sig=111",
-      "https://source.unsplash.com/featured/800x500/?koh+samui+resort&sig=112",
-      "https://source.unsplash.com/featured/800x500/?koh+samui+resort&sig=113",
-      "https://source.unsplash.com/featured/800x500/?koh+samui+resort&sig=114",
-      "https://source.unsplash.com/featured/800x500/?koh+samui+resort&sig=115"
+      "https://picsum.photos/seed/3821183708/800/500",
+      "https://picsum.photos/seed/3821183709/800/500",
+      "https://picsum.photos/seed/3821183710/800/500",
+      "https://picsum.photos/seed/3821183711/800/500"
     ]
   }
 ];
