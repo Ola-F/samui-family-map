@@ -49,8 +49,11 @@
   }
 
   function stars(score){
+    if(score === "check") return "❓ לבדיקה";
     if(score == null) return "";
-    const s = Math.max(0, Math.min(5, Number(score)));
+    const n = Number(score);
+    if(Number.isNaN(n)) return "";
+    const s = Math.max(0, Math.min(5, n));
     return "★".repeat(s) + "☆".repeat(5 - s);
   }
 
