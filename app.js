@@ -3,14 +3,16 @@
   const raw = (window.ATTRACTIONS || []).slice();
 
   const TAG_LABELS = {
-    aircon: "ממוזג",
+    ac: "ממוזג",
     stroller: "מתאים לעגלה",
     water: "מים",
+    day_pass: "Day Pass",
     drive_under_20: "עד 20 ד׳ נסיעה",
     drive_over_20: "מעל 20 ד׳ נסיעה"
-  };
+  }
+  ;
 
-  const TAG_ORDER = ["aircon","stroller","water","drive_under_20","drive_over_20"];
+  const TAG_ORDER = ["ac","stroller","water","drive_under_20","drive_over_20"];
 
   const elSearch = document.getElementById("search");
   const elCategory = document.getElementById("category");
@@ -49,7 +51,7 @@
   }
 
   function stars(score){
-    if(score === "check") return "❓ לבדיקה";
+    if(score === "check") return `<span class="checkBadge"><span class="checkIcon">?</span><span class="checkText">(לבדיקה)</span></span>`;
     if(score == null) return "";
     const n = Number(score);
     if(Number.isNaN(n)) return "";
@@ -210,6 +212,14 @@
     const dist = item.distance_min || "";
     const score = item.score;
     const starsText = stars(score);
+    const metaParts = [];
+    if(item.cuisine) metaParts.push(`מטבח: ${escapeHtml(item.cuisine)}`);
+    if(item.price) metaParts.push(`מחיר: ${escapeHtml(item.price)}`);
+    const metaText = metaParts.length ? `<div class="meta">${metaParts.join(" · ")}</div>` : "";
+
+    const hoursLine = item.hours ? `<div class="line"><div class="k">שעות</div><div class="v">${item.hours === 'לבדיקה' ? '<span class="checkBadge">❓</span> לבדיקה' : escapeHtml(item.hours)}</div></div>` : ``;
+    const phoneLine = item.phone ? `<div class="line"><div class="k">טלפון</div><div class="v"><a class="tel" href="tel:${escapeHtml(item.phone)}">${escapeHtml(item.phone)}</a></div></div>` : ``;
+
     const mainImg = (item.images && item.images[0]) ? item.images[0] : "";
     const rawTags = (item.tags || []);
     const tags = rawTags.filter(t => TAG_LABELS[t]).map(t => TAG_LABELS[t]);
@@ -224,7 +234,7 @@
           <div class="cardMain">
             <div class="cardTitleRow">
               <h3 class="cardTitle">${escapeHtml(icon)} ${escapeHtml(item.name)}</h3>
-              ${score ? `<div class="stars" title="ציון">${starsText}</div>` : ``}
+              ${score ? `<div class="stars" title="ציון">${starsText}</div>` : ``}${metaText}
             </div>
 
             <div class="badges">
@@ -236,6 +246,8 @@
         </div>
 
         <div class="cardBody">
+          ${hoursLine}
+          ${phoneLine}
           <div class="line"><div class="k">למה שווה</div><div class="v">${escapeHtml(item.why || "")}</div></div>
           <div class="line"><div class="k">תמצית ביקורות</div><div class="v">${escapeHtml(item.reviews || "")}</div></div>
         </div>
@@ -282,9 +294,9 @@
     let pool = items.slice();
 
     if(mode === "hot"){
-      pool = pool.filter(it => hasTag(it, "aircon") || hasTag(it, "water"));
+      pool = pool.filter(it => hasTag(it, "ac") || hasTag(it, "water"));
     } else if(mode === "rain"){
-      pool = pool.filter(it => hasTag(it, "rain") || hasTag(it, "aircon"));
+      pool = pool.filter(it => hasTag(it, "rain") || hasTag(it, "ac"));
     } else if(mode === "tired"){
       pool = pool.filter(it => hasTag(it, "short")).sort((a,b)=> mins(a) - mins(b));
     }

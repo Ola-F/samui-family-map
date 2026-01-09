@@ -349,3 +349,38 @@ a:hover{text-decoration:underline}
 .v{line-height:1.6;}
 .badges{gap:10px; flex-wrap:wrap;}
 .filtersInner{gap:12px;}
+
+
+/* Check / needs review badge */
+.checkBadge{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  white-space:nowrap;
+}
+.checkIcon{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:18px;
+  height:18px;
+  border-radius:999px;
+  background: var(--accent2);
+  color:#ffffff;
+  font-weight:700;
+  font-size:12px;
+  line-height:1;
+}
+.checkText{
+  color:#065f46; /* dark green */
+  font-weight:600;
+}
+
+/* Card meta line (e.g., cuisine/price) */
+.meta{
+  margin-top:6px;
+  font-size:13px;
+  color:#374151;
+}
+
+.tel{color:inherit;text-decoration:underline;}
