@@ -436,3 +436,19 @@ a:hover{text-decoration:underline}
     width: 100%;
   }
 }
+
+
+/* Desktop: tags should be in rows (keep mobile as-is) */
+@media (min-width: 900px){
+  .tags{
+    display:flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+  }
+  .tags .tag{
+    margin: 0;
+  }
+}
