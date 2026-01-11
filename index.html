@@ -14,10 +14,7 @@
     <div class="topbarInner">
       <div class="titleWrap"><div>
           <h1 class="title"><span class="titleTop">קוסמוי</span><span class="titleBottom">אטרקציות למשפחות</span></h1>
-          <ul class="subpoints" aria-label="הנחיות שימוש">
-            <li>לחיצה על מקום מעדכנת את המפה.</li>
-            <li>זמני נסיעה הם הערכה מאזור Bang Rak.</li>
-          </ul>
+          <button class="infoLink" id="openHowTo" type="button" aria-haspopup="dialog">ℹ️ הסבר להתמצאות באתר</button>
         </div>
       </div>
     </div>
@@ -114,6 +111,27 @@
       <div class="modalNote">הערה: התמונות הן להמחשה (תוצאות תמונה כלליות) ועשויות להשתנות.</div>
     </div>
   </div>
+
+
+  <div id="howtoModal" class="modal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="howtoTitle">
+    <div class="modalOverlay" id="howtoOverlay"></div>
+    <div class="modalBody modalBodyHowto">
+      <div class="modalTop">
+        <div class="modalTitle" id="howtoTitle">איך לקרוא את האתר?</div>
+        <button class="btn btnGhost" id="closeHowTo" type="button" aria-label="סגירה">✕</button>
+      </div>
+      <div class="howtoContent">
+        <div class="howtoItem"><span class="howtoKey">סינון מוקדם:</span> נכנסו רק מקומות שרלוונטיים למשפחות (גיל גן) ושנמצאו עליהם סימנים סבירים ממקורות אמינים/קהילות. גם מקומות “לבדיקה” עברו סינון – הם פשוט לא דורגו.</div>
+        <div class="howtoItem"><span class="howtoKey">דירוג ⭐:</span> מופיע רק כשיש דירוג עקבי וכמות ביקורות משמעותית (לרוב Google/TripAdvisor) + התאמה ברורה לילדים.</div>
+        <div class="howtoItem"><span class="howtoKey">❓ (לבדיקה):</span> מוצג רק כשלא היה מספיק מידע אמין כדי לתת דירוג כוכבים.</div>
+        <div class="howtoItem"><span class="howtoKey">זמני נסיעה 🚗:</span> הערכה מאזור Bang Rak (צפון האי) – קנה מידה יחסי.</div>
+        <div class="howtoItem"><span class="howtoKey">Day Pass:</span> יש קטגוריה ייעודית לריזורטים עם Day Pass. מחירים/שעות מוצגים רק כשנמצא מקור. “++” מציין תוספת שירות+מע״מ (כאשר רלוונטי).</div>
+        <div class="howtoItem"><span class="howtoKey">שעות וטלפון 🕘📞:</span> מוצגים רק אם נמצא מקור אמין; כשאין – השדה נשאר ריק.</div>
+        <div class="howtoItem"><span class="howtoKey">מפה:</span> לחיצה על כרטיס ממקדת את המפה לאותו מקום.</div>
+      </div>
+    </div>
+  </div>
+
 
   <script>
     window.ATTRACTIONS = [

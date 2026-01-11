@@ -35,6 +35,13 @@
   const elModalTitle = document.getElementById("modalTitle");
   const elModalGrid = document.getElementById("modalGrid");
 
+  // How-to modal
+  const elHowToBtn = document.getElementById("openHowTo");
+  const elHowTo = document.getElementById("howtoModal");
+  const elHowToOverlay = document.getElementById("howtoOverlay");
+  const elCloseHowTo = document.getElementById("closeHowTo");
+
+
   function isBase(item){
     return (item.category_he || item.category) === "בסיס" || (item.category === "Base") || /base/i.test(item.name);
   }
@@ -280,6 +287,18 @@
     document.body.style.overflow = "";
   }
 
+  function openHowTo(){
+    if(!elHowTo) return;
+    elHowTo.setAttribute("aria-hidden","false");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeHowTo(){
+    if(!elHowTo) return;
+    elHowTo.setAttribute("aria-hidden","true");
+    document.body.style.overflow = "";
+  }
+
   function resetAll(){
     elSearch.value = "";
     elCategory.value = "";
@@ -371,8 +390,15 @@
 
   elModalOverlay.addEventListener("click", closeGallery);
   elCloseModal.addEventListener("click", closeGallery);
+
+  // How-to modal listeners
+  if(elHowToBtn) elHowToBtn.addEventListener("click", openHowTo);
+  if(elHowToOverlay) elHowToOverlay.addEventListener("click", closeHowTo);
+  if(elCloseHowTo) elCloseHowTo.addEventListener("click", closeHowTo);
   document.addEventListener("keydown", (e)=>{
-    if(e.key === "Escape" && elModal.getAttribute("aria-hidden") === "false") closeGallery();
+    if(e.key !== "Escape") return;
+    if(elModal && elModal.getAttribute("aria-hidden") === "false") closeGallery();
+    if(elHowTo && elHowTo.getAttribute("aria-hidden") === "false") closeHowTo();
   });
 
   // Initial map should be base if exists
