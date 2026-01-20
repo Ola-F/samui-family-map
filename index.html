@@ -1,12 +1,1580 @@
-<!DOCTYPE html>
-<html lang="he">
+<!doctype html>
+<html lang="he" dir="rtl">
 <head>
-<meta charset="utf-8">
-<title>קוסמוי – אטרקציות למשפחות</title>
-<link rel="stylesheet" href="styles.css">
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>קוסמוי – אטרקציות למשפחה</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css"/>
 </head>
 <body>
-<div id="app"></div>
-<script src="app.js"></script>
+  <header class="topbar">
+    <div class="topbarInner">
+      <div class="titleWrap"><div>
+          <h1 class="title"><span class="titleTop">קוסמוי</span><span class="titleBottom">אטרקציות למשפחות</span></h1>
+          <button class="infoLink" id="openHowTo" type="button" aria-haspopup="dialog">ℹ️ הסבר על האתר</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section class="filters" aria-label="סינון">
+    <div class="filtersInner">
+      <div class="filtersLabel">סינון:</div>
+
+      
+      <div class="field">
+        <label class="fieldLabel" for="destination">יעד</label>
+        <select id="destination" class="select">
+          <option value="koh_samui">קוסמוי</option>
+          <option value="bangkok">בנגקוק</option>
+        </select>
+      </div>
+
+<div class="field">
+        <label class="fieldLabel" for="search">חיפוש</label>
+        <input id="search" class="input" type="search" placeholder="חפשו מקום / מילה בתיאור..." />
+      </div>
+
+      <div class="field">
+        <label class="fieldLabel" for="category">קטגוריה</label>
+        <select id="category" class="select"></select>
+      </div>
+
+      <div class="field">
+        <label class="fieldLabel" for="minScore">לפי ציון</label>
+        <select id="minScore" class="select">
+          <option value="0">הכול</option>
+          <option value="5">⭐️ 5 ומעלה</option>
+          <option value="4">⭐️ 4 ומעלה</option>
+          <option value="3">⭐️ 3 ומעלה</option>
+        </select>
+      </div>
+
+      <div class="field resetField">
+        <label class="fieldLabel" aria-hidden="true">&nbsp;</label>
+        <button id="resetBtn" class="btn btnGhost" type="button">איפוס</button>
+      </div>
+
+      <div class="field tagsField">
+        <div class="fieldLabel">תגיות</div>
+        <div class="tags" id="tags"></div>
+      </div>
+
+      <div class="field">
+        <label class="fieldLabel" for="sortBy">מיון</label>
+        <select id="sortBy" class="select">
+          <option value="score_desc">ציון (גבוה לנמוך)</option>
+          <option value="distance_asc">מרחק (קרוב לרחוק)</option>
+          <option value="name_asc">שם (א-ת)</option>
+        </select>
+      </div>
+
+      <div class="field buildField">
+        <label class="fieldLabel" for="mode">בנה לי יום</label>
+        <div class="buildRow">
+          <select id="mode" class="select">
+            <option value="general">כללי</option>
+            <option value="hot">חם מאוד</option>
+            <option value="rain">גשום</option>
+            <option value="tired">עייפים</option>
+          </select>
+          <button id="buildBtn" class="btn" type="button">בנה לי יום</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <main class="layout">
+    <section class="listPane" aria-label="רשימת אטרקציות">
+      <div class="listHeader">
+        <div class="count" id="count"></div>
+      </div>
+      <div id="cards" class="cards"></div>
+    </section>
+
+    <aside class="mapPane" aria-label="מפה">
+      <div class="mapCard">
+        <div class="mapHeader">
+          <div class="mapTitle">מפה</div>
+          <a id="openMaps" class="mapLink" href="#" target="_blank" rel="noopener">פתחי ב‑Google Maps</a>
+        </div>
+        <iframe id="map" class="mapFrame" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+          src="https://www.google.com/maps?q=The%20Gardens%20by%20Samui%20Beach%20Properties%20Bang%20Rak&output=embed">
+        </iframe>
+        <div class="mapHint">טיפ: לחצי על כרטיס כדי למקד את המפה.</div>
+      </div>
+    </aside>
+  </main>
+
+  <div id="modal" class="modal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modalOverlay" id="modalOverlay"></div>
+    <div class="modalBody">
+      <div class="modalTop">
+        <div class="modalTitle" id="modalTitle">תמונות</div>
+        <button class="btn btnGhost" id="closeModal" type="button">סגירה</button>
+      </div>
+      <div class="modalGrid" id="modalGrid"></div>
+      <div class="modalNote">הערה: התמונות הן להמחשה (תוצאות תמונה כלליות) ועשויות להשתנות.</div>
+    </div>
+  </div>
+
+
+  <div id="howtoModal" class="modal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="howtoTitle" style="display:none">
+    <div class="modalOverlay" id="howtoOverlay"></div>
+    <div class="modalBody modalBodyHowto">
+      <div class="modalTop">
+        <div class="modalTitle" id="howtoTitle">איך לקרוא את האתר?</div>
+        <button class="btn btnGhost" id="closeHowTo" type="button" aria-label="סגירה">✕</button>
+      </div>
+      <div class="howtoContent">
+        <div class="howtoItem"><span class="howtoKey">סינון מוקדם:</span> נכנסו רק מקומות שרלוונטיים למשפחות (גיל גן) ושנמצאו עליהם סימנים סבירים ממקורות אמינים/קהילות. גם מקומות “לבדיקה” עברו סינון – הם פשוט לא דורגו.</div>
+        <div class="howtoItem"><span class="howtoKey">דירוג ⭐:</span> מופיע רק כשיש דירוג עקבי וכמות ביקורות משמעותית (לרוב Google/TripAdvisor) + התאמה ברורה לילדים.</div>
+        <div class="howtoItem"><span class="howtoKey">❓ (לבדיקה):</span> מוצג רק כשלא היה מספיק מידע אמין כדי לתת דירוג כוכבים.</div>
+        <div class="howtoItem"><span class="howtoKey">זמני נסיעה 🚗:</span> הערכה מאזור Bang Rak (צפון האי) – קנה מידה יחסי.</div>
+        <div class="howtoItem"><span class="howtoKey">Day Pass:</span> יש קטגוריה ייעודית לריזורטים עם Day Pass. מחירים/שעות מוצגים רק כשנמצא מקור. “++” מציין תוספת שירות+מע״מ (כאשר רלוונטי).</div>
+        <div class="howtoItem"><span class="howtoKey">שעות וטלפון 🕘📞:</span> מוצגים רק אם נמצא מקור אמין; כשאין – השדה נשאר ריק.</div>
+        <div class="howtoItem"><span class="howtoKey">מפה:</span> לחיצה על כרטיס ממקדת את המפה לאותו מקום.</div>
+      </div>
+    </div>
+  </div>
+
+
+  <script>
+    window.ATTRACTIONS = [
+  {
+    "name": "Bang Rak Beach",
+    "category": "Beach",
+    "why": "חוף קרוב מאוד לקפיצות קצרות, שקיעות וימים רגועים.",
+    "distance_min": "3–6 דק׳",
+    "reviews": "פרקטי ונוח עם ילדים; לא החוף הכי ‘גלויה’ אבל קרוב ושימושי.",
+    "link": "https://maps.google.com/?q=Bang+Rak+Beach+Koh+Samui",
+    "score": 4,
+    "category_he": "חופים",
+    "icon": "🏖️",
+    "tags": [
+      "water",
+      "stroller",
+      "drive_under_20"
+    ],
+    "images": [
+      "https://picsum.photos/seed/1138715138/800/500",
+      "https://picsum.photos/seed/1138715139/800/500",
+      "https://picsum.photos/seed/1138715140/800/500",
+      "https://picsum.photos/seed/1138715141/800/500"
+    ],
+    "hours": "כל היום",
+    "phone": "",
+    "destination": "koh_samui"
+  },
+  {
+    "name": "Bophut Beach",
+    "category": "Beach",
+    "why": "חוף משפחתי + הליכה/אוכל ליד Fisherman’s Village.",
+    "distance_min": "8–12 דק׳",
+    "reviews": "אהוב על משפחות; נעים לשלב חוף עם אוכל וטיול קצר.",
+    "link": "https://maps.google.com/?q=Bophut+Beach+Koh+Samui",
+    "score": 5,
+    "category_he": "חופים",
+    "icon": "🏖️",
+    "tags": [
+      "water",
+      "stroller",
+      "drive_under_20"
+    ],
+    "images": [
+      "https://picsum.photos/seed/4101238919/800/500",
+      "https://picsum.photos/seed/4101238920/800/500",
+      "https://picsum.photos/seed/4101238921/800/500",
+      "https://picsum.photos/seed/4101238922/800/500"
+    ],
+    "hours": "כל היום",
+    "phone": "",
+    "destination": "koh_samui"
+  },
+  {
+    "name": "Choeng Mon Beach",
+    "category": "Beach",
+    "why": "מפרץ שקט עם מים רדודים יחסית – מתאים במיוחד לילדים קטנים.",
+    "distance_min": "12–15 דק׳",
+    "reviews": "נחשב רגוע ובטיחותי יותר לילדים לעומת חופים פתוחים.",
+    "link": "https://maps.google.com/?q=Choeng+Mon+Beach+Koh+Samui",
+    "score": 5,
+    "category_he": "חופים",
+    "icon": "🏖️",
+    "tags": [
+      "water",
+      "stroller",
+      "drive_under_20"
+    ],
+    "images": [
+      "https://picsum.photos/seed/2118058727/800/500",
+      "https://picsum.photos/seed/2118058728/800/500",
+      "https://picsum.photos/seed/2118058729/800/500",
+      "https://picsum.photos/seed/2118058730/800/500"
+    ],
+    "hours": "כל היום",
+    "phone": "",
+    "destination": "koh_samui"
+  },
+  {
+    "name": "Mae Nam Beach",
+    "category": "Beach",
+    "why": "חוף ארוך ושקט יותר, פחות ‘סצנה’.",
+    "distance_min": "15–18 דק׳",
+    "reviews": "מתאים לימים רגועים עם מרחב – פחות אטרקציות מסביב.",
+    "link": "https://maps.google.com/?q=Mae+Nam+Beach+Koh+Samui",
+    "score": 4,
+    "category_he": "חופים",
+    "icon": "🏖️",
+    "tags": [
+      "water",
+      "stroller",
+      "drive_under_20"
+    ],
+    "images": [
+      "https://picsum.photos/seed/2141859429/800/500",
+      "https://picsum.photos/seed/2141859430/800/500",
+      "https://picsum.photos/seed/2141859431/800/500",
+      "https://picsum.photos/seed/2141859432/800/500"
+    ],
+    "hours": "כל היום",
+    "phone": "",
+    "destination": "koh_samui"
+  },
+  {
+    "name": "Lipa Noi Beach",
+    "category": "Beach",
+    "why": "חוף שנחשב ידידותי לשחייה (לעיתים רדוד מאוד) – יום שלם בצד השקט של האי.",
+    "distance_min": "55–65 דק׳",
+    "reviews": "שקט מאוד; מומלץ לבדוק תנאי ים/גאות ביום ההגעה.",
+    "link": "https://maps.google.com/?q=Lipa+Noi+Beach+Koh+Samui",
+    "score": 5,
+    "category_he": "חופים",
+    "icon": "🏖️",
+    "tags": [
+      "water",
+      "drive_over_20",
+      "stroller"
+    ],
+    "images": [
+      "https://picsum.photos/seed/2668394859/800/500",
+      "https://picsum.photos/seed/2668394860/800/500",
+      "https://picsum.photos/seed/2668394861/800/500",
+      "https://picsum.photos/seed/2668394862/800/500"
+    ],
+    "hours": "כל היום",
+    "phone": "",
+    "destination": "koh_samui"
+  },
+  {
+    "name": "Crystal Bay (Silver Beach)",
+    "category": "Beach",
+    "why": "חוף יפהפה ‘גלויה’ – אופציה ליום מיוחד.",
+    "distance_min": "30–35 דק׳",
+    "reviews": "המון אנשים מתלהבים מהנוף; תנאי ים יכולים להשתנות ולכן פחות אידיאלי כשגרה לילדים קטנים.",
+    "link": "https://maps.google.com/?q=Crystal+Bay+Silver+Beach+Koh+Samui",
+    "score": 4,
+    "category_he": "חופים",
+    "icon": "🏖️",
+    "tags": [
+      "water",
+      "drive_over_20",
+      "stroller"
+    ],
+    "images": [
+      "https://picsum.photos/seed/924736905/800/500",
+      "https://picsum.photos/seed/924736906/800/500",
+      "https://picsum.photos/seed/924736907/800/500",
+      "https://picsum.photos/seed/924736908/800/500"
+    ],
+    "hours": "כל היום",
+    "phone": "",
+    "destination": "koh_samui"
+  },
+  {
+    "name": "Chi Samui (Bang Rak)",
+    "category": "BeachFood",
+    "why": "מסעדה/ביץ׳ קלאב עם חוף ובריכה – נוח למשפחות.",
+    "distance_min": "6–8 דק׳",
+    "reviews": "נוח ביום; אפשר לשלב אוכל והתרעננות בבריכה.",
+    "link": "https://maps.google.com/?q=Chi+Samui+Bang+Rak",
+    "score": 5,
+    "category_he": "מסעדות חוף",
+    "icon": "🍽️",
+    "tags": [
+      "water",
+      "drive_under_20"
+    ],
+    "images": [
+      "https://picsum.photos/seed/1442008318/800/500",
+      "https://picsum.photos/seed/1442008319/800/500",
+      "https://picsum.photos/seed/1442008320/800/500",
+      "https://picsum.photos/seed/1442008321/800/500"
+    ],
+    "hours": "לבדיקה",
+    "phone": "",
+    "cuisine": "לבדיקה",
+    "price": "לבדיקה",
+    "destination": "koh_samui"
+  },
+  {
+    "name": "CoCo Tam’s (Bophut)",
+    "category": "BeachFood",
+    "why": "אווירה על החול בבופוט – מעולה לשקיעה/ערב מוקדם.",
+    "distance_min": "10–12 דק׳",
+    "reviews": "פופולרי מאוד; בערב יכול להיות עמוס ורועש יותר – עם ילדים עדיף להגיע מוקדם.",
+    "link": "https://maps.google.com/?q=CoCo+Tam's+Bophut+Koh+Samui",
+    "score": 5,
+    "category_he": "מסעדות חוף",
+    "icon": "🍽️",
+    "tags": [
+      "water",
+      "drive_under_20"
+    ],
+    "images": [
+      "https://picsum.photos/seed/1884653005/800/500",
+      "https://picsum.photos/seed/1884653006/800/500",
+      "https://picsum.photos/seed/1884653007/800/500",
+      "https://picsum.photos/seed/1884653008/800/500"
+    ],
+    "hours": "לבדיקה",
+    "phone": "",
+    "cuisine": "לבדיקה",
+    "price": "לבדיקה",
+    "destination": "koh_samui"
+  },
+  {
+    "name": "The Shack",
+    "category": "BeachFood",
+    "why": "קז׳ואל, ‘בלי פוזה’ – נעים עם ילדים.",
+    "distance_min": "~15 דק׳",
+    "reviews": "בחירה טובה כשמחפשים אווירה רגועה ואוכל טוב ליד הים.",
+    "link": "https://maps.google.com/?q=The+Shack+Koh+Samui",
+    "score": 4,
+    "category_he": "מסעדות חוף",
+    "icon": "🍽️",
+    "tags": [
+      "water",
+      "drive_under_20"
+    ],
+    "images": [
+      "https://picsum.photos/seed/2911014356/800/500",
+      "https://picsum.photos/seed/2911014357/800/500",
+      "https://picsum.photos/seed/2911014358/800/500",
+      "https://picsum.photos/seed/2911014359/800/500"
+    ],
+    "hours": "לבדיקה",
+    "phone": "",
+    "cuisine": "לבדיקה",
+    "price": "לבדיקה",
+    "destination": "koh_samui"
+  },
+  {
+    "name": "KohCo Beach Club",
+    "category": "BeachFood",
+    "why": "יום רגוע על הים – אופציה לשבת בנוחות.",
+    "distance_min": "~15 דק׳",
+    "reviews": "מתואר כמתאים למשפחות; מומלץ לבדוק עומסים בשעות שיא.",
+    "link": "https://maps.google.com/?q=KohCo+Beach+Club+Koh+Samui",
+    "score": 4,
+    "category_he": "מסעדות חוף",
+    "icon": "🍽️",
+    "tags": [
+      "water",
+      "drive_under_20"
+    ],
+    "images": [
+      "https://picsum.photos/seed/3833266568/800/500",
+      "https://picsum.photos/seed/3833266569/800/500",
+      "https://picsum.photos/seed/3833266570/800/500",
+      "https://picsum.photos/seed/3833266571/800/500"
+    ],
+    "hours": "לבדיקה",
+    "phone": "",
+    "cuisine": "לבדיקה",
+    "price": "לבדיקה",
+    "destination": "koh_samui"
+  },
+  {
+    "name": "Hacienda Beach Restaurant",
+    "category": "BeachFood",
+    "why": "אוכל פשוט וטוב על החוף – מתאים למשפחות.",
+    "distance_min": "~12 דק׳",
+    "reviews": "לא יומרני; פתרון יציב ונוח.",
+    "link": "https://maps.google.com/?q=Hacienda+Beach+Restaurant+Koh+Samui",
+    "score": 4,
+    "category_he": "מסעדות חוף",
+    "icon": "🍽️",
+    "tags": [
+      "water",
+      "drive_under_20"
+    ],
+    "images": [
+      "https://picsum.photos/seed/2843221750/800/500",
+      "https://picsum.photos/seed/2843221751/800/500",
+      "https://picsum.photos/seed/2843221752/800/500",
+      "https://picsum.photos/seed/2843221753/800/500"
+    ],
+    "hours": "לבדיקה",
+    "phone": "",
+    "cuisine": "לבדיקה",
+    "price": "לבדיקה",
+    "destination": "koh_samui"
+  },
+  {
+    "name": "Maya Kids Club (Fisherman’s Village, Bophut)",
+    "category": "Kids",
+    "why": "מועדון ילדים/משחקייה ממוזגת ב-Fisherman’s Village – מעולה להפסקה של שעה–שעתיים.",
+    "distance_min": "~10 דק׳",
+    "reviews": "מקום פרקטי לשילוב עם טיול/ארוחה ב-Fisherman’s Village. מומלץ לבדוק שעות וכניסה במקום.",
+    "link": "https://maps.google.com/?q=Maya+Kids+Club+Koh+Samui",
+    "score": 5,
+    "category_he": "משחקיות",
+    "icon": "🧸",
+    "tags": [
+      "drive_under_20",
+      "ac"
+    ],
+    "images": [
+      "https://picsum.photos/seed/3803452569/800/500",
+      "https://picsum.photos/seed/3803452570/800/500",
+      "https://picsum.photos/seed/3803452571/800/500",
+      "https://picsum.photos/seed/3803452572/800/500"
+    ],
+    "hours": "כל יום 08:00–19:00",
+    "phone": "+66 62 221 9750",
+    "destination": "koh_samui"
+  },
+  {
+    "name": "Clever Kids Playroom (Mae Nam)",
+    "category": "Kids",
+    "why": "משחקייה נישתית לשגרה של חודש – כיף לכמה שעות.",
+    "distance_min": "~15–20 דק׳",
+    "reviews": "הורים מחפשים מקום רגוע/נקי; פחות ‘פארק ענק’, יותר שימושי ליומיום.",
+    "link": "https://maps.google.com/?q=Clever+Kids+Playroom+Mae+Nam+Koh+Samui",
+    "score": 4,
+    "category_he": "משחקיות",
+    "icon": "🧸",
+    "tags": [
+      "drive_under_20",
+      "ac"
+    ],
+    "images": [
+      "https://picsum.photos/seed/1439646414/800/500",
+      "https://picsum.photos/seed/1439646415/800/500",
+      "https://picsum.photos/seed/1439646416/800/500",
+      "https://picsum.photos/seed/1439646417/800/500"
+    ],
+    "hours": "א׳–ה׳ 09:00–19:00, ו׳ סגור, שבת 09:00–19:00 (ד׳ פיצול שעות)",
+    "phone": "",
+    "destination": "koh_samui"
+  },
+  {
+    "name": "Lotus’s (Tesco Lotus) – אזור משחקים לילדים",
+    "category": "Kids",
+    "why": "פתרון ממוזג 'על הדרך' כשעושים קניות/סידורים – בחלק מהסניפים יש אזור משחקים/קידס זון.",
+    "distance_min": "~15–20 דק׳",
+    "reviews": "לא אטרקציה בפני עצמה. מומלץ לוודא מראש באיזה סניף יש מתחם פעיל ושעות פתיחה.",
+    "link": "https://maps.google.com/?q=Tesco+Lotus+Koh+Samui+playground",
+    "score": "check",
+    "category_he": "משחקיות",
+    "icon": "🧸",
+    "tags": [
+      "ac",
+      "drive_under_20",
+      "ac"
+    ],
+    "images": [
+      "https://picsum.photos/seed/3593780847/800/500",
+      "https://picsum.photos/seed/3593780848/800/500",
+      "https://picsum.photos/seed/3593780849/800/500",
+      "https://picsum.photos/seed/3593780850/800/500"
+    ],
+    "hours": "לבדיקה",
+    "phone": "",
+    "destination": "koh_samui"
+  },
+  {
+    "name": "Central Festival Samui – Kids Area",
+    "category": "Kids",
+    "why": "קניון ממוזג עם אזורי ילדים – טוב כשצריך מזגן וקניות.",
+    "distance_min": "~20 דק׳",
+    "reviews": "נוח; מומלץ לבדוק אילו מתקנים פעילים ביום ההגעה.",
+    "link": "https://maps.google.com/?q=Central+Festival+Samui+kids+playground",
+    "score": 4,
+    "category_he": "משחקיות",
+    "icon": "🧸",
+    "tags": [
+      "drive_under_20",
+      "ac"
+    ],
+    "images": [
+      "https://picsum.photos/seed/3924268324/800/500",
+      "https://picsum.photos/seed/3924268325/800/500",
+      "https://picsum.photos/seed/3924268326/800/500",
+      "https://picsum.photos/seed/3924268327/800/500"
+    ],
+    "hours": "לבדיקה",
+    "phone": "",
+    "destination": "koh_samui"
+  },
+  {
+    "name": "Holiday Inn Resort Samui – Playground",
+    "category": "Kids",
+    "why": "מגרש משחקים בריזורט – אופציה ליום ריזורט/בילוי נינוח.",
+    "distance_min": "~12–15 דק׳",
+    "reviews": "שווה לבדוק מדיניות כניסה/Day pass לפני שמגיעים.",
+    "link": "https://maps.google.com/?q=Holiday+Inn+Resort+Koh+Samui+playground",
+    "score": 4,
+    "category_he": "משחקיות",
+    "icon": "🧸",
+    "tags": [
+      "drive_under_20",
+      "ac"
+    ],
+    "images": [
+      "https://picsum.photos/seed/501287510/800/500",
+      "https://picsum.photos/seed/501287511/800/500",
+      "https://picsum.photos/seed/501287512/800/500",
+      "https://picsum.photos/seed/501287513/800/500"
+    ],
+    "hours": "כל יום 09:00–21:00",
+    "phone": "+66 77 951 777",
+    "destination": "koh_samui"
+  },
+  {
+    "name": "Na Muang Waterfalls",
+    "category": "Nature",
+    "why": "טבע ירוק ומפלים – שינוי אווירה מהחופים.",
+    "distance_min": "~45–55 דק׳",
+    "reviews": "יפה, אבל עלול להיות חלק – נעליים סגורות והשגחה צמודה.",
+    "link": "https://maps.google.com/?q=Na+Muang+Waterfall+Koh+Samui",
+    "score": 4,
+    "category_he": "טבע",
+    "icon": "🌿",
+    "tags": [
+      "drive_over_20"
+    ],
+    "images": [
+      "https://picsum.photos/seed/1542944604/800/500",
+      "https://picsum.photos/seed/1542944605/800/500",
+      "https://picsum.photos/seed/1542944606/800/500",
+      "https://picsum.photos/seed/1542944607/800/500"
+    ],
+    "hours": "כל יום 09:00–17:00",
+    "phone": "",
+    "destination": "koh_samui"
+  },
+  {
+    "name": "Secret Buddha Garden (Ta Nim)",
+    "category": "Nature",
+    "why": "גן פסלים מסתורי בהרים – חוויה סקרנית לילדים.",
+    "distance_min": "~50–60 דק׳",
+    "reviews": "מעניין ומיוחד; גישה/שבילים יכולים להיות תלולים.",
+    "link": "https://maps.google.com/?q=Secret+Buddha+Garden+Koh+Samui",
+    "score": 4,
+    "category_he": "טבע",
+    "icon": "🌿",
+    "tags": [
+      "drive_over_20"
+    ],
+    "images": [
+      "https://picsum.photos/seed/3143335393/800/500",
+      "https://picsum.photos/seed/3143335394/800/500",
+      "https://picsum.photos/seed/3143335395/800/500",
+      "https://picsum.photos/seed/3143335396/800/500"
+    ],
+    "hours": "לבדיקה",
+    "phone": "",
+    "destination": "koh_samui"
+  },
+  {
+    "name": "Samui Elephant Sanctuary",
+    "category": "Animals",
+    "why": "מפגש פילים עם דגש על הצלה וללא רכיבה/מופעים (לפי הפרסומים).",
+    "distance_min": "~15–35 דק׳",
+    "reviews": "מומלץ למשפחות שמחפשות חוויה אתית וחינוכית; מומלץ להזמין מראש.",
+    "link": "https://www.samuielephantsanctuary.org",
+    "score": 5,
+    "category_he": "חיות",
+    "icon": "🐘",
+    "tags": [
+      "drive_over_20"
+    ],
+    "images": [
+      "https://picsum.photos/seed/3604000086/800/500",
+      "https://picsum.photos/seed/3604000087/800/500",
+      "https://picsum.photos/seed/3604000088/800/500",
+      "https://picsum.photos/seed/3604000089/800/500"
+    ],
+    "hours": "כל יום 09:00–17:00",
+    "phone": "+66 95 269 8343",
+    "destination": "koh_samui"
+  },
+  {
+    "name": "Paradise Park Farm",
+    "category": "Animals",
+    "why": "חיות, נוף ונקודות צילום – יום גיוון.",
+    "distance_min": "~60 דק׳",
+    "reviews": "כדאי לקרוא ביקורות עדכניות ולהחליט לפי הערכים שלכם לגבי רווחת בעלי חיים.",
+    "link": "https://maps.google.com/?q=Paradise+Park+Farm+Koh+Samui",
+    "score": 3,
+    "category_he": "חיות",
+    "icon": "🐘",
+    "tags": [
+      "drive_over_20"
+    ],
+    "images": [
+      "https://picsum.photos/seed/1773724056/800/500",
+      "https://picsum.photos/seed/1773724057/800/500",
+      "https://picsum.photos/seed/1773724058/800/500",
+      "https://picsum.photos/seed/1773724059/800/500"
+    ],
+    "hours": "כל יום 09:00–17:00",
+    "phone": "+66 81 255 1222",
+    "destination": "koh_samui"
+  },
+  {
+    "name": "Tropical Kaleidoscope",
+    "category": "Kids",
+    "why": "חוויה נישתית צבעונית/אמנותית – מתאימה לילדים סקרנים.",
+    "distance_min": "~25–30 דק׳ (הערכה)",
+    "reviews": "לא אטרקציה ‘קלאסית’; תלוי באופי הילדים ובמה שמוצע באותו יום.",
+    "link": "https://maps.google.com/?q=Tropical+Kaleidoscope+Koh+Samui",
+    "score": 4,
+    "category_he": "משחקיות",
+    "icon": "🧸",
+    "tags": [
+      "drive_over_20"
+    ],
+    "images": [
+      "https://picsum.photos/seed/3821183708/800/500",
+      "https://picsum.photos/seed/3821183709/800/500",
+      "https://picsum.photos/seed/3821183710/800/500",
+      "https://picsum.photos/seed/3821183711/800/500"
+    ],
+    "hours": "לבדיקה",
+    "phone": "",
+    "destination": "koh_samui"
+  },
+  {
+    "name": "Kidomo Kids Club",
+    "category": "Kids",
+    "why": "קלאב ילדים/משחקייה לפי עמוד פייסבוק. מתאים להשלמת אופציות לחודש.",
+    "distance_min": "~15–25 דק׳",
+    "reviews": "אין כאן אימות איכות מלא – מומלץ לקרוא ביקורות ולבדוק תמונות/שעות לפני הגעה.",
+    "link": "https://www.facebook.com/people/Kidomo-Kids-Club/61557885639437/",
+    "score": "check",
+    "category_he": "משחקיות",
+    "icon": "🧸",
+    "tags": [
+      "drive_over_20",
+      "ac"
+    ],
+    "images": [],
+    "hours": "שבת–חמישי 10:00–18:00, ראשון 12:00–17:00, שישי סגור",
+    "phone": "+66 91 393 2000",
+    "destination": "koh_samui"
+  },
+  {
+    "name": "City of Bricks – LEGO Playroom",
+    "category": "Kids",
+    "why": "משחקיית LEGO/חלל משחק לפי גוגל מפות – יכול להחזיק ילדים כמה שעות.",
+    "distance_min": "~20–30 דק׳",
+    "reviews": "מומלץ לבדוק גילאים, כללי כניסה, והאם יש אזור לקטנים.",
+    "link": "https://www.google.com/maps?q=City+of+bricks+LEGO+playroom/+Kid%27s+Club,+10/81,+Mae+Nam,+Surat+Thani+84330",
+    "score": "check",
+    "category_he": "משחקיות",
+    "icon": "🧸",
+    "tags": [
+      "drive_over_20"
+    ],
+    "images": [],
+    "hours": "לבדיקה",
+    "phone": "",
+    "destination": "koh_samui"
+  },
+  {
+    "name": "Beavers Animal Cafe",
+    "category": "Animals",
+    "why": "בית קפה עם חיות לפי עמוד פייסבוק.",
+    "distance_min": "~20–30 דק׳",
+    "reviews": "מומלץ לוודא תנאי רווחה והיגיינה, ולקרוא ביקורות לפני הגעה עם ילדים קטנים.",
+    "link": "https://www.facebook.com/beaversanimalcafe",
+    "score": "check",
+    "category_he": "חיות",
+    "icon": "🐾",
+    "tags": [
+      "drive_over_20",
+      "ac"
+    ],
+    "images": [],
+    "hours": "לבדיקה",
+    "phone": "",
+    "destination": "koh_samui"
+  },
+  {
+    "name": "COSMOS Hobby Center",
+    "category": "Workshop",
+    "why": "מרכז תחביבים/יצירה לפי גוגל מפות – ייתכן שיש סדנאות או פעילות לילדים.",
+    "distance_min": "~25–35 דק׳",
+    "reviews": "כדאי לבדוק מראש מה הפעילות בפועל, התאמה לגילאים ומחיר.",
+    "link": "https://www.google.com/maps/place/COSMOS+Hobby+Center/@9.5519927,100.0347292,742m/data=!3m2!1e3!4b1!4m6!3m5!1s0x3054f18789ac00ff:0xaf7a7ec513d6cd0d!8m2!3d9.5519927!4d100.0347292!16s%2Fg%2F11whmgs8p6?entry=ttu&g_ep=EgoyMDI2MDEwNC4wIKXMDSoASAFQAw%3D%3D",
+    "score": "check",
+    "category_he": "חוגים וסדנאות",
+    "icon": "🧑‍🍳",
+    "tags": [
+      "drive_over_20",
+      "ac"
+    ],
+    "images": [],
+    "hours": "לבדיקה",
+    "phone": "",
+    "destination": "koh_samui"
+  },
+  {
+    "name": "Cat Cafe by CatWorld",
+    "category": "Animals",
+    "why": "בית קפה/חוויה סביב חתולים (מקור: קבוצת פייסבוק) – עשוי להיות נחמד לילדים שאוהבים בעלי חיים.",
+    "distance_min": "~—",
+    "reviews": "כדאי לבדוק מראש התאמה לילדים קטנים, היגיינה וכללי התנהגות עם בעלי חיים.",
+    "link": "https://www.facebook.com/groups/2714665732153676/user/61575732334095/",
+    "score": "check",
+    "category_he": "חיות",
+    "icon": "🐾",
+    "tags": [],
+    "images": [],
+    "hours": "לבדיקה",
+    "phone": "",
+    "destination": "koh_samui"
+  },
+  {
+    "name": "LEO & LILY",
+    "category": "Workshops",
+    "why": "פעילות/חוג (כולל אזכור לחוג בישול לילדים) – שווה לבדיקה בזמן שהות ארוכה.",
+    "distance_min": "~—",
+    "reviews": "מקור המידע בפייסבוק; מומלץ לבדוק לו״ז, עלות, גילאים ושפה.",
+    "link": "https://www.facebook.com/groups/328042461124951/user/61563343420157/",
+    "score": "check",
+    "category_he": "חוגים וסדנאות",
+    "icon": "👩‍🍳",
+    "tags": [],
+    "images": [],
+    "hours": "לבדיקה",
+    "phone": "",
+    "destination": "koh_samui"
+  },
+  {
+    "name": "Lite Samui",
+    "category": "Play",
+    "why": "מקום/קהילה מקומית לילדים (על בסיס פייסבוק) – שווה לבדיקה לשעות משחק/פעילות.",
+    "distance_min": "~—",
+    "reviews": "מידע זמין בעיקר דרך פייסבוק; מומלץ לוודא שעות, גילאים ותנאים לפני הגעה.",
+    "link": "https://www.facebook.com/profile.php?id=100090805450586",
+    "score": "check",
+    "category_he": "משחקיות",
+    "icon": "🧸",
+    "tags": [
+      "stroller",
+      "ac",
+      "ac"
+    ],
+    "images": [],
+    "hours": "לבדיקה",
+    "phone": "",
+    "destination": "koh_samui"
+  },
+  {
+    "name": "Fisherman’s Village Walking Street",
+    "category": "Market",
+    "why": "שוק ערב/Walking Street פופולרי: אוכל, דוכנים, אווירה – מתאים לטיול ערב עם ילדים.",
+    "distance_min": "~10–15 דק׳",
+    "reviews": "מומלץ להגיע מוקדם כדי להימנע מצפיפות, ולשמור על עיניים על הקטן.",
+    "link": "https://maps.google.com/?q=Fisherman's+Village+Walking+Street+Koh+Samui",
+    "score": "check",
+    "category_he": "שווקים",
+    "icon": "🛍️",
+    "tags": [
+      "water",
+      "drive_under_20"
+    ],
+    "images": [],
+    "hours": "שישי 17:00–23:00 (משוער)",
+    "phone": "",
+    "destination": "koh_samui"
+  },
+  {
+    "name": "Lamai Night Market",
+    "category": "Market",
+    "why": "שוק ערב באיזור לאמאי – אוכל ודוכנים.",
+    "distance_min": "~30–40 דק׳",
+    "reviews": "שווה לבדוק ימים ושעות פעילות מראש.",
+    "link": "https://maps.google.com/?q=Lamai+Night+Market+Koh+Samui",
+    "score": "check",
+    "category_he": "שווקים",
+    "icon": "🛍️",
+    "tags": [
+      "drive_over_20"
+    ],
+    "images": [],
+    "hours": "כל יום 15:00–24:00 (משוער)",
+    "phone": "+66 84 695 3502",
+    "destination": "koh_samui"
+  },
+  {
+    "name": "Chaweng Night Market",
+    "category": "Market",
+    "why": "אזור שוק/אוכל בערב בצ׳אוונג.",
+    "distance_min": "~20–30 דק׳",
+    "reviews": "מתאים לטיול ערב קצר; יכול להיות רועש/עמוס בשעות שיא.",
+    "link": "https://maps.google.com/?q=Chaweng+Night+Market+Koh+Samui",
+    "score": "check",
+    "category_he": "שווקים",
+    "icon": "🛍️",
+    "tags": [
+      "drive_over_20"
+    ],
+    "images": [],
+    "hours": "כל יום (משוער) 11:00–01:00",
+    "phone": "",
+    "destination": "koh_samui"
+  },
+  {
+    "name": "מסעדה למשפחות (להוספה לפי המלצות מקומיות)",
+    "category": "Food",
+    "why": "קטגוריה זו מיועדת למסעדות טובות במיוחד למשפחות (ילדים, ניקיון, אווירה).",
+    "distance_min": "~—",
+    "reviews": "אם תשלחי 3–5 שמות/לינקים שאהבת – אכניס כאן רק את המובחרות עם סינון קפדני.",
+    "link": "#",
+    "score": "check",
+    "category_he": "מסעדות",
+    "icon": "🍽️",
+    "tags": [
+      "ac"
+    ],
+    "images": [],
+    "hours": "לבדיקה",
+    "phone": "",
+    "destination": "koh_samui"
+  },
+  {
+    "name": "Hin Lad Waterfall",
+    "category": "Trail",
+    "why": "מפל/מסלול קצר יחסית, אופציה לטבע קליל.",
+    "distance_min": "~40–55 דק׳",
+    "reviews": "מומלץ נעליים סגורות והשגחה – שבילים יכולים להיות חלקים.",
+    "link": "https://maps.google.com/?q=Hin+Lad+Waterfall+Koh+Samui",
+    "score": "check",
+    "category_he": "טבע",
+    "icon": "🌿",
+    "tags": [
+      "drive_over_20"
+    ],
+    "images": [],
+    "hours": "לבדיקה",
+    "phone": "",
+    "destination": "koh_samui"
+  },
+  {
+    "name": "Carnival Beach Village",
+    "category": "Restaurant",
+    "category_he": "מסעדות",
+    "icon": "🍽️",
+    "why": "מסעדה/מתחם אוכל שנראית ידידותית למשפחות – נכנסה לרשימת ההמלצות שציינת.",
+    "distance_min": "~12–18 דק׳",
+    "reviews": "מקום חוף משפחתי עם “kids area”, אווירה צבעונית ו”no minimum spend” (לפי האתר הרשמי). מומלץ בשעות פחות עמוסות.",
+    "link": "https://maps.google.com/?q=Carnival+Beach+Village+Koh+Samui",
+    "score": "check",
+    "tags": [],
+    "images": [],
+    "cuisine": "בינלאומי",
+    "price": "$$",
+    "hours": "כל יום 09:00–22:00",
+    "phone": "+66 95 282 4468",
+    "destination": "koh_samui"
+  },
+  {
+    "name": "JOY's KITCHEN (MULAJOY)",
+    "category": "Restaurant",
+    "category_he": "מסעדות",
+    "icon": "🍽️",
+    "why": "בית קפה/מסעדה שהופיעה בהמלצות שלך – עשוי להתאים לעצירה רגועה עם ילדים.",
+    "distance_min": "~35–50 דק׳",
+    "reviews": "על פי האתר הרשמי: יש תפריט ילדים ופינת ילדים. אוכל בסגנון בריא (גם אופציות צמחוניות/טבעוניות וגם בשר/דג).",
+    "link": "https://maps.google.com/?q=MOM+TO+BE+Mulajoy+Samui",
+    "score": "check",
+    "tags": [],
+    "images": [],
+    "cuisine": "בריא/בינלאומי (כולל אופציות לילדים)",
+    "price": "$$",
+    "hours": "ב׳–ש׳ 09:30–19:00 (א׳ סגור)",
+    "phone": "+66 61 617 9909",
+    "destination": "koh_samui"
+  },
+  {
+    "name": "Baannairai Farm & Café",
+    "category": "Restaurant",
+    "category_he": "מסעדות",
+    "icon": "🍽️",
+    "why": "קפה/חווה בסגנון משפחתי – לרוב מקומות כאלה מצליחים עם ילדים בזכות מרחב ואווירה קלילה.",
+    "distance_min": "~25–35 דק׳",
+    "reviews": "דירוג גוגל 4.9/5 (לפי FoodInGuide); מקום “ג׳ונגלי” רגוע שמתאים לבראנץ׳/צהריים.",
+    "link": "https://maps.google.com/?q=Baannairai+Farm+%26+Caf%C3%A9+Koh+Samui",
+    "score": 5,
+    "tags": [],
+    "images": [],
+    "cuisine": "קפה/תאילנדי קל + אופציות אירופאיות",
+    "price": "฿฿",
+    "hours": "כל יום 09:00–18:00 (ד׳ סגור)",
+    "phone": "+66 86 479 2559",
+    "destination": "koh_samui"
+  },
+  {
+    "name": "Samui Pier (Restaurant/Cafe)",
+    "category": "Restaurant",
+    "category_he": "מסעדות",
+    "icon": "🍽️",
+    "why": "מקום שהופיע אצלך בהמלצות – יכול להתאים לארוחה קלילה/שקיעה.",
+    "distance_min": "—",
+    "reviews": "לבדיקה: עד כמה רועש בערב והאם יש מנות ילדים/לא חריף.",
+    "link": "https://maps.google.com/?q=Samui+Pier+restaurant+Koh+Samui",
+    "score": "check",
+    "tags": [],
+    "images": [],
+    "cuisine": "בינלאומי/ים",
+    "price": "$$",
+    "hours": "לבדיקה",
+    "phone": "",
+    "destination": "koh_samui"
+  },
+  {
+    "name": "Suzette Samui",
+    "category": "Restaurant",
+    "category_he": "מסעדות",
+    "icon": "🍽️",
+    "why": "ציינת שקראת שיש במקום גם אזור/משחקייה לילדים ושייתכן גם חוג בישול.",
+    "distance_min": "~15–25 דק׳",
+    "reviews": "לפי ביקורות גוגל (דרך Wanderlog): יש אזור משחק לילדים, כולל אזור ממוזג; דירוג 4.8/5.",
+    "link": "https://maps.google.com/?q=Suzette+Samui",
+    "score": 5,
+    "tags": [],
+    "images": [],
+    "cuisine": "קרפים/קפה (ידידותי לילדים)",
+    "price": "฿฿",
+    "hours": "ג׳–א׳ 11:00–22:00 (ב׳ סגור)",
+    "phone": "+66 95 361 4559",
+    "destination": "koh_samui"
+  },
+  {
+    "name": "Santiburi Koh Samui – Day Pass",
+    "category": "DayPass",
+    "why": "בריכה ענקית וחוף Mae Nam; קרדיט לאוכל/שתייה ומועדון ילדים לפי סוג החבילה.",
+    "distance_min": "15–25 דק׳",
+    "reviews": "ריזורט יוקרתי ואהוב למשפחות; ה-Day Pass כולל לרוב קרדיט 1,000฿. מומלץ לבדוק תנאי ילדים ביום ההגעה.",
+    "link": "https://maps.google.com/?q=Santiburi+Koh+Samui",
+    "score": 5,
+    "price": "THB 1,500++ (כולל קרדיט 1,000฿)",
+    "hours": "כל יום 09:00–17:00",
+    "phone": "+66 77 425 031",
+    "day_pass": "כן",
+    "icon": "🏨",
+    "category_he": "ריזורטים עם Day Pass",
+    "tags": [
+      "day_pass"
+    ],
+    "images": [],
+    "day_pass_lines": [
+      "מחיר: THB 1,500++ לאדם",
+      "קרדיט: THB 1,000 לשימוש באוכל/שתייה/ספא (לפי החבילה)",
+      "ילדים: מתחת לגיל 4 חינם; גיל 4–12 בהנחה (מחיר משתנה – לבדיקה)",
+      "++ = 10% שירות + 7% מס (לפי Klook)."
+    ],
+    "destination": "koh_samui"
+  },
+  {
+    "name": "Tolani Resort Koh Samui (KOA Dining) – Day Pass",
+    "category": "DayPass",
+    "why": "יום “בריכה+חוף” במחיר נגיש יחסית, כולל קרדיט מלא לאוכל/שתייה.",
+    "distance_min": "25–35 דק׳",
+    "reviews": "מצוין אם בא לכן יום רגוע ליד מים עם אוכל; הקרדיט שווה למחיר הכניסה.",
+    "link": "https://maps.google.com/?q=Tolani+Resort+Koh+Samui+KOA+Dining",
+    "score": 4,
+    "price": "฿599 לאדם (קרדיט 599฿ לאוכל/שתייה)",
+    "hours": "לבדיקה (בד״כ במהלך שעות הפעילות של KOA/הריזורט)",
+    "phone": "",
+    "day_pass": "כן",
+    "icon": "🏨",
+    "category_he": "ריזורטים עם Day Pass",
+    "tags": [
+      "day_pass"
+    ],
+    "images": [],
+    "destination": "koh_samui"
+  },
+  {
+    "name": "Holiday Inn Resort Samui Bophut – Family Day Pass (לבדיקה)",
+    "category": "DayPass",
+    "why": "אחד הריזורטים הכי “ילדים-במרכז”: Kids Club ממוזג, Splash Pad ומגרש משחקים.",
+    "distance_min": "10–18 דק׳",
+    "reviews": "האטרקציה לילדים חזקה במיוחד; פרטי ה-Day Pass משתנים עונתית – מומלץ לאשר מול המלון לפני שמגיעים.",
+    "link": "https://maps.google.com/?q=Holiday+Inn+Resort+Samui+Bophut+Beach",
+    "score": "check",
+    "price": "לבדיקה (דווחו על 2,000–4,000฿ לחבילה משפחתית בעונות מסוימות)",
+    "hours": "לבדיקה מול המלון (טלפון/מייל באתר הרשמי)",
+    "phone": "+66 77 951 777",
+    "day_pass": "לבדיקה",
+    "icon": "🏨",
+    "category_he": "ריזורטים עם Day Pass",
+    "tags": [
+      "day_pass"
+    ],
+    "images": [],
+    "day_pass_lines": [
+      "מחיר: (לבדיקה) חבילות משפחתיות לדוגמא: THB 2,000 / THB 4,000 (כולל קרדיט אוכל/שתייה)",
+      "קרדיט: (לבדיקה) THB 1,500 או THB 3,000 קרדיט",
+      "ילדים: חבילות מוגדרות לפי #מבוגרים/#ילדים – לבדיקה מול המלון",
+      "שים לב: מקור המידע הזה הוא מדריך צד ג׳ שמתייחס גם לעונות אחרות – חובה לאשר ישירות מול המלון לפני הגעה."
+    ],
+    "destination": "koh_samui"
+  },
+  {
+    "name": "Outrigger Koh Samui Beach Resort – Day Pass (לבדיקה)",
+    "category": "DayPass",
+    "why": "אפשרות Day Pass במחיר נוח, עם פעילות יומית ואווירה רגועה.",
+    "distance_min": "20–35 דק׳",
+    "reviews": "שימי לב שחלק מהפעילויות מיועדות לגילאי 6+; מתאים יותר למשפחה עם ילד גדול יותר או אם בא לכן בעיקר בריכה/חוף.",
+    "link": "https://maps.google.com/?q=Outrigger+Koh+Samui+Beach+Resort",
+    "score": "check",
+    "price": "חצי יום 350++฿ / יום מלא 500++฿ לאדם (לפי האתר)",
+    "hours": "כל יום 10:00–22:00",
+    "phone": "+66 77 458 560",
+    "day_pass": "לבדיקה",
+    "icon": "🏨",
+    "category_he": "ריזורטים עם Day Pass",
+    "tags": [
+      "day_pass"
+    ],
+    "images": [],
+    "day_pass_lines": [
+      "מחיר: Half-day THB 350++ / Full-day THB 500++ (לאדם)",
+      "ילדים: לפי האתר הרשמי: מגיל 6+ (פחות מתאים לילד בן 3.5)",
+      "++ = 10% שירות + 7% מס (נהוג בתאילנד; לא תמיד מצוין). חובה לאשר מול הריזורט."
+    ],
+    "destination": "koh_samui"
+  },
+  {
+    "name": "Siam Serpentarium",
+    "category": "Attraction",
+    "category_he": "חיות",
+    "icon": "🐍",
+    "why": "מוזיאון נחשים ממוזג ומסודר ליד אזור שדה התעופה; לרוב לא עמוס.",
+    "distance_min": "15–25 דק׳",
+    "reviews": "ביקורות מתארות מקום מעניין ומאורגן עם מופע נחשים; חלק מציינים שזה יקר יחסית ומרוחק מהמרכז.",
+    "link": "https://maps.google.com/?q=Siam+Serpentarium",
+    "score": 4,
+    "tags": [
+      "ac",
+      "drive_under_20"
+    ],
+    "images": [],
+    "hours": "לבדיקה",
+    "phone": "",
+    "destination": "bangkok"
+  },
+  {
+    "name": "Lat Krabang Park (Suan Phra Nakhon)",
+    "category": "Nature",
+    "category_he": "טבע",
+    "icon": "🌿",
+    "why": "פארק מקומי שקט ונקי ליד Lat Krabang – מעולה להפסקה עם ילדים.",
+    "distance_min": "5–12 דק׳",
+    "reviews": "ביקורות עדכניות מציינות נקי, רגוע, מתאים להליכה ולילדים; פחות עמוס בבוקר.",
+    "link": "https://maps.google.com/?q=Lat+Krabang+Park+Suan+Phra+Nakhon",
+    "score": 4,
+    "tags": [
+      "drive_under_20"
+    ],
+    "images": [],
+    "hours": "כל היום",
+    "phone": "+66 2 326 9994",
+    "destination": "bangkok"
+  },
+  {
+    "name": "HarborLand – MEGA Bangna",
+    "category": "Playroom",
+    "category_he": "משחקיות",
+    "icon": "🛝",
+    "why": "אחת המשחקיות הגדולות והמושקעות באזור; ממוזגת, נקייה ומגוונת לגילאי גן.",
+    "distance_min": "25–35 דק׳",
+    "reviews": "ביקורות מתארות צוות קשוב ומתקן נקי עם אזורי משחק שונים; מומלץ להגיע מוקדם כדי להימנע מעומס.",
+    "link": "https://maps.google.com/?q=MEGA+HarborLand+Megabangna",
+    "score": 4,
+    "tags": [
+      "ac",
+      "drive_over_20"
+    ],
+    "images": [],
+    "hours": "Mon–Fri 10:30–20:00 | Weekend 10:00–20:00",
+    "phone": "(+66) 065 848 2000",
+    "destination": "bangkok"
+  },
+  {
+    "name": "MEGA Bangna (קניון)",
+    "category": "Mall",
+    "category_he": "קניונים",
+    "icon": "🛍️",
+    "why": "קניון גדול ונוח למשפחות (ממוזג) עם הרבה אוכל ואפשרויות לילדים.",
+    "distance_min": "25–35 דק׳",
+    "reviews": "נוח ליום חם/גשום; עמוס פחות מאזורי מרכז העיר, אבל עדיין נהיה עמוס בסופ״ש.",
+    "link": "https://maps.google.com/?q=Mega+Bangna",
+    "score": 4,
+    "tags": [
+      "ac",
+      "drive_over_20"
+    ],
+    "images": [],
+    "hours": "לבדיקה",
+    "phone": "",
+    "destination": "bangkok"
+  },
+  {
+    "name": "Chocolate Ville",
+    "category": "Restaurant",
+    "category_he": "מסעדות",
+    "icon": "🍝",
+    "why": "מקום משפחתי יפה עם אווירה, מרווח, טוב לעצירה עם ילדים (מומלץ להגיע מוקדם).",
+    "distance_min": "20–35 דק׳",
+    "reviews": "דירוגים גבוהים מאוד ברשת; האווירה מקבלת המון מחמאות, האוכל משתנה בטעם לפי ביקורות.",
+    "link": "https://maps.google.com/?q=Chocolate+Ville+Bangkok",
+    "score": 4,
+    "tags": [
+      "drive_over_20"
+    ],
+    "images": [],
+    "hours": "לבדיקה",
+    "phone": "",
+    "cuisine": "מטבח תאילנדי + מערבי",
+    "price": "$$",
+    "destination": "bangkok"
+  },
+  {
+    "name": "MK Restaurant (באזור Mega Bangna / Lat Krabang)",
+    "category": "Restaurant",
+    "category_he": "מסעדות",
+    "icon": "🍲",
+    "why": "רשת סוקי פופולרית למשפחות – אוכל עדין, ילדים אוהבים לבשל ליד השולחן.",
+    "distance_min": "בדרך / תלוי סניף",
+    "reviews": "נחשב ידידותי למשפחות; האיכות משתנה בין סניפים.",
+    "link": "https://maps.google.com/?q=MK+Restaurant+Mega+Bangna",
+    "score": "לבדיקה",
+    "tags": [
+      "ac"
+    ],
+    "images": [],
+    "hours": "לבדיקה",
+    "phone": "לבדיקה",
+    "cuisine": "סוקי / הוט-פוט",
+    "price": "$$",
+    "destination": "bangkok"
+  },
+  {
+    "name": "Sizzler (Mega Bangna)",
+    "category": "Restaurant",
+    "category_he": "מסעדות",
+    "icon": "🍗",
+    "why": "תפריט מוכר לילדים, פתרון נוח לצהריים בתוך קניון.",
+    "distance_min": "25–35 דק׳",
+    "reviews": "בחירה פרקטית למשפחות בקניונים; פחות “חווייתי” ויותר נוח.",
+    "link": "https://maps.google.com/?q=Sizzler+Mega+Bangna",
+    "score": "לבדיקה",
+    "tags": [
+      "ac",
+      "drive_over_20"
+    ],
+    "images": [],
+    "hours": "לבדיקה",
+    "phone": "לבדיקה",
+    "cuisine": "מערבי/גריל",
+    "price": "$$",
+    "destination": "bangkok"
+  },
+  {
+    "name": "Siam Premium Outlets Bangkok",
+    "category": "Attraction",
+    "category_he": "קניונים",
+    "icon": "🛍️",
+    "why": "אאוטלט גדול ליד שדה התעופה; נוח למשפחות (שירותים/מנוחה) ואפשר להסתובב בלי עומס של מרכז העיר.",
+    "distance_min": "15–25 דק׳",
+    "reviews": "באתר הרשמי מצוינים שירותים למשפחות (כולל kiddy cruise ואזורי מנוחה).",
+    "link": "https://maps.google.com/?q=Siam+Premium+Outlets+Bangkok",
+    "score": 4,
+    "tags": [
+      "ac",
+      "drive_under_20"
+    ],
+    "images": [],
+    "hours": "ב׳–ו׳ 11:00–20:00 | ש׳–א׳ 10:00–20:00",
+    "phone": "+66 2 082 8998",
+    "destination": "bangkok"
+  },
+  {
+    "name": "Central Village – Bangkok Luxury Outlet",
+    "category": "Attraction",
+    "category_he": "קניונים",
+    "icon": "🛍️",
+    "why": "אאוטלט קרוב לשדה התעופה; מרווח ונעים לטיול קצר עם ילדים, כולל אזור 'Siam playground' לפי האתר הרשמי.",
+    "distance_min": "10–20 דק׳",
+    "reviews": "באתר הרשמי מוזכר 'Siam playground' וכמה אזורי בילוי; נוח לשהייה קצרה.",
+    "link": "https://maps.google.com/?q=Central+Village+Bangkok+Luxury+Outlet",
+    "score": 4,
+    "tags": [
+      "ac",
+      "drive_under_20"
+    ],
+    "images": [],
+    "hours": "כל יום 10:00–22:00",
+    "phone": "+66 2 550 6555",
+    "destination": "bangkok"
+  },
+  {
+    "name": "Hua Takhe Old Market",
+    "category": "Attraction",
+    "category_he": "שווקים",
+    "icon": "🛶",
+    "why": "שוק/אזור ישן על תעלה ב-Lat Krabang; הליכה קצרה, בתי קפה ואווירה מקומית בלי עומס של שווקים תיירותיים.",
+    "distance_min": "15–25 דק׳",
+    "reviews": "ביקורות מתארות מקום לא צפוף יחסית, מתאים לטיול קצר ותמיכה בקהילה מקומית.",
+    "link": "https://maps.google.com/?q=Hua+Takhe+Old+Market",
+    "score": 4,
+    "tags": [
+      "drive_under_20"
+    ],
+    "images": [],
+    "hours": "א׳–ו׳ 06:00–17:00 | ש׳ 06:00–18:00",
+    "phone": "",
+    "destination": "bangkok"
+  },
+  {
+    "name": "The Paseo Mall Lat Krabang",
+    "category": "Attraction",
+    "category_he": "קניונים",
+    "icon": "🛍️",
+    "why": "קומיוניטי-מול קרוב ל-Lat Krabang; נוח לאוכל/סידורים עם ילדים בלי להיכנס למרכז.",
+    "distance_min": "15–25 דק׳",
+    "reviews": "ביקורות מציינות קניון שקט יחסית עם אוכל ושירותים; מתאים לעצירה קצרה.",
+    "link": "https://maps.google.com/?q=The+Paseo+Mall+Lat+Krabang",
+    "score": "לבדיקה",
+    "tags": [
+      "ac",
+      "drive_under_20"
+    ],
+    "images": [],
+    "hours": "כל יום 10:00–21:00",
+    "phone": "+66 2 329 8999",
+    "destination": "bangkok"
+  },
+  {
+    "name": "Robinson Lifestyle Lat Krabang",
+    "category": "Attraction",
+    "category_he": "קניונים",
+    "icon": "🛍️",
+    "why": "קניון נוח באזור; אופציה טובה ליום חם/גשום, אוכל ומרחב להסתובבות.",
+    "distance_min": "15–25 דק׳",
+    "reviews": "קרוב יחסית למלון; מומלץ בעיקר לעצירה פרקטית.",
+    "link": "https://maps.google.com/?q=Robinson+Lifestyle+Latkrabang",
+    "score": "לבדיקה",
+    "tags": [
+      "ac",
+      "drive_under_20"
+    ],
+    "images": [],
+    "hours": "כל יום 10:00–21:00",
+    "phone": "+66 2 320 7250",
+    "destination": "bangkok"
+  },
+  {
+    "name": "The First Lounge (Gate43 Hotel Restaurant)",
+    "category": "Restaurant",
+    "category_he": "מסעדות",
+    "icon": "🍽️",
+    "why": "המסעדה של המלון – הכי קל עם ילדים אחרי טיסה/ערב עייף.",
+    "distance_min": "0–5 דק׳",
+    "reviews": "לפי ה-FAQ של המלון, המסעדה פתוחה משעות הבוקר ועד לילה.",
+    "link": "https://maps.google.com/?q=Gate43+Airport+Hotel+The+First+Lounge",
+    "score": "לבדיקה",
+    "tags": [
+      "ac",
+      "drive_under_20"
+    ],
+    "images": [],
+    "hours": "06:30–23:00",
+    "phone": "+66 98 747 7214",
+    "cuisine": "תאילנדי/בינלאומי",
+    "price": "$$",
+    "destination": "bangkok"
+  },
+  {
+    "name": "Thai-Kor (The Paseo Mall)",
+    "category": "Restaurant",
+    "category_he": "מסעדות",
+    "icon": "🥢",
+    "why": "מסעדה קוריאנית בקניון – נוח עם ילדים, ממוזג, במיקום פרקטי.",
+    "distance_min": "15–25 דק׳",
+    "reviews": "אופציה ידידותית למשפחות בתוך קניון; מתאים כעצירה בדרך.",
+    "link": "https://maps.google.com/?q=Thai-Kor+The+Paseo+Mall+Lat+Krabang",
+    "score": "לבדיקה",
+    "tags": [
+      "ac",
+      "drive_under_20"
+    ],
+    "images": [],
+    "hours": "כל יום 10:00–21:00",
+    "phone": "+66 2 346 4373",
+    "cuisine": "קוריאני",
+    "price": "$–$$",
+    "destination": "bangkok"
+  },
+  {
+    "name": "Central Festival Samui",
+    "category": "Shopping",
+    "category_he": "קניות",
+    "icon": "🛍️",
+    "why": "קניון מרכזי וממוזג — פתרון מצוין ליום חם/גשום עם ילדים (חנויות, אוכל, שירותים נוחים).",
+    "distance_min": "10–20 דק׳",
+    "reviews": "נוח למשפחות בעיקר בגלל מזגן, שירותים ומגוון אוכל. (לא דירוג חיצוני — דירוג פנימי באתר).",
+    "link": "https://maps.google.com/?q=Central+Festival+Samui",
+    "score": 4,
+    "tags": [
+      "ac",
+      "drive_under_20"
+    ],
+    "images": [],
+    "hours": "",
+    "phone": "",
+    "destination": "koh_samui"
+  },
+  {
+    "name": "Big C Supercenter Samui",
+    "category": "Shopping",
+    "category_he": "קניות",
+    "icon": "🛍️",
+    "why": "סופר/כלבו במחירים מקומיים — שימושי למשפחות (בגדי ילדים בסיסיים, צעצועים, ציוד יומיומי).",
+    "distance_min": "10–20 דק׳",
+    "reviews": "נכנס כקניות פרקטיות למשפחה — לא כאטרקציה.",
+    "link": "https://maps.google.com/?q=Big+C+Supercenter+Samui",
+    "score": 4,
+    "tags": [
+      "ac",
+      "drive_under_20"
+    ],
+    "images": [],
+    "hours": "",
+    "phone": "",
+    "destination": "koh_samui"
+  },
+  {
+    "name": "Lotus’s Samui",
+    "category": "Shopping",
+    "category_he": "קניות",
+    "icon": "🛍️",
+    "why": "קניות יומיומיות נוחות במחירים מקומיים + אזורים ממוזגים ומזון מוכן.",
+    "distance_min": "10–20 דק׳",
+    "reviews": "טוב לעצירה קצרה עם ילדים (מזגן ושירותים נוחים).",
+    "link": "https://maps.google.com/?q=Lotus%27s+Samui",
+    "score": 4,
+    "tags": [
+      "ac",
+      "drive_under_20"
+    ],
+    "images": [],
+    "hours": "",
+    "phone": "",
+    "destination": "koh_samui"
+  },
+  {
+    "name": "Makro Food Service Samui",
+    "category": "Shopping",
+    "category_he": "קניות",
+    "icon": "🛍️",
+    "why": "קניות גדולות למשפחה במחירים טובים (סיטונאות).",
+    "distance_min": "5–15 דק׳",
+    "reviews": "פרקטי במיוחד לשהייה ארוכה באי.",
+    "link": "https://maps.google.com/?q=Makro+Koh+Samui",
+    "score": 4,
+    "tags": [
+      "ac",
+      "drive_under_20"
+    ],
+    "images": [],
+    "hours": "",
+    "phone": "",
+    "destination": "koh_samui"
+  },
+  {
+    "name": "7‑Eleven (Bang Rak)",
+    "category": "Supermarkets",
+    "category_he": "סופרים",
+    "icon": "🛒",
+    "why": "אופציה נוחה לקניות יומיומיות למשפחה.",
+    "distance_min": "0–5 דק׳",
+    "reviews": "נבחר לפי שימושיות למשפחות (לא דירוג חיצוני).",
+    "link": "https://maps.google.com/?q=7-Eleven+Bang+Rak+Koh+Samui",
+    "score": 4,
+    "tags": [
+      "drive_under_20"
+    ],
+    "images": [],
+    "hours": "",
+    "phone": "",
+    "destination": "koh_samui"
+  },
+  {
+    "name": "Lotus’s Express (Bang Rak)",
+    "category": "Supermarkets",
+    "category_he": "סופרים",
+    "icon": "🛒",
+    "why": "אופציה נוחה לקניות יומיומיות למשפחה.",
+    "distance_min": "0–5 דק׳",
+    "reviews": "נבחר לפי שימושיות למשפחות (לא דירוג חיצוני).",
+    "link": "https://maps.google.com/?q=Lotus's+Express+Bang+Rak+Koh+Samui",
+    "score": 4,
+    "tags": [
+      "drive_under_20"
+    ],
+    "images": [],
+    "hours": "",
+    "phone": "",
+    "destination": "koh_samui"
+  },
+  {
+    "name": "Bang Rak Fresh Market",
+    "category": "Supermarkets",
+    "category_he": "סופרים",
+    "icon": "🛒",
+    "why": "אופציה נוחה לקניות יומיומיות למשפחה.",
+    "distance_min": "0–5 דק׳",
+    "reviews": "נבחר לפי שימושיות למשפחות (לא דירוג חיצוני).",
+    "link": "https://maps.google.com/?q=Bang+Rak+Fresh+Market+Koh+Samui",
+    "score": 4,
+    "tags": [
+      "drive_under_20"
+    ],
+    "images": [],
+    "hours": "",
+    "phone": "",
+    "destination": "koh_samui"
+  },
+  {
+    "name": "Makro Food Service Samui",
+    "category": "Supermarkets",
+    "category_he": "סופרים",
+    "icon": "🛒",
+    "why": "אופציה נוחה לקניות יומיומיות למשפחה.",
+    "distance_min": "5–15 דק׳",
+    "reviews": "נבחר לפי שימושיות למשפחות (לא דירוג חיצוני).",
+    "link": "https://maps.google.com/?q=Makro+Koh+Samui",
+    "score": 4,
+    "tags": [
+      "drive_under_20"
+    ],
+    "images": [],
+    "hours": "",
+    "phone": "",
+    "destination": "koh_samui"
+  },
+  {
+    "name": "Big C Supercenter Samui",
+    "category": "Supermarkets",
+    "category_he": "סופרים",
+    "icon": "🛒",
+    "why": "אופציה נוחה לקניות יומיומיות למשפחה.",
+    "distance_min": "10–20 דק׳",
+    "reviews": "נבחר לפי שימושיות למשפחות (לא דירוג חיצוני).",
+    "link": "https://maps.google.com/?q=Big+C+Koh+Samui",
+    "score": 4,
+    "tags": [
+      "drive_under_20"
+    ],
+    "images": [],
+    "hours": "",
+    "phone": "",
+    "destination": "koh_samui"
+  },
+  {
+    "name": "Lotus’s Samui",
+    "category": "Supermarkets",
+    "category_he": "סופרים",
+    "icon": "🛒",
+    "why": "אופציה נוחה לקניות יומיומיות למשפחה.",
+    "distance_min": "10–20 דק׳",
+    "reviews": "נבחר לפי שימושיות למשפחות (לא דירוג חיצוני).",
+    "link": "https://maps.google.com/?q=Lotus's+Koh+Samui",
+    "score": 4,
+    "tags": [
+      "drive_under_20"
+    ],
+    "images": [],
+    "hours": "",
+    "phone": "",
+    "destination": "koh_samui"
+  },
+  {
+    "name": "Let’s Relax Spa Samui",
+    "category": "Spa",
+    "category_he": "ספא & טיפוח",
+    "icon": "💆",
+    "why": "ספא מסודר (רשת). מתאים במיוחד לטיפולים קצרים כשנמצאים עם ילדים.",
+    "distance_min": "10–25 דק׳",
+    "reviews": "מדורג באתר לפי התאמה למשפחות; מומלץ לוודא מראש לגבי ילדים/טיפולים.",
+    "link": "https://maps.google.com/?q=Let%27s+Relax+Spa+Koh+Samui",
+    "score": 4,
+    "tags": [
+      "ac"
+    ],
+    "images": [],
+    "hours": "",
+    "phone": "",
+    "destination": "koh_samui"
+  },
+  {
+    "name": "Health Land Samui (לבדיקה)",
+    "category": "Spa",
+    "category_he": "ספא & טיפוח",
+    "icon": "💆",
+    "why": "רשת ספא מוכרת. דורש בדיקה נקודתית של מדיניות ילדים וסניף.",
+    "distance_min": "10–25 דק׳",
+    "reviews": "לבדיקה: לוודא מראש קבלת ילדים ותנאים.",
+    "link": "https://maps.google.com/?q=Health+Land+Spa+Koh+Samui",
+    "score": "לבדיקה",
+    "tags": [
+      "ac"
+    ],
+    "images": [],
+    "hours": "",
+    "phone": "",
+    "destination": "koh_samui"
+  },
+  {
+    "name": "צמות/ציפורניים באזורים תיירותיים (לבדיקה)",
+    "category": "Spa",
+    "category_he": "ספא & טיפוח",
+    "icon": "💇",
+    "why": "חוויה שילדים נהנים ממנה (צמות/ציפורניים). איכות משתנה בין מקומות.",
+    "distance_min": "10–25 דק׳",
+    "reviews": "לבדיקה: לבחור מקום עם ביקורות טובות ועדכניות לפני שקובעים.",
+    "link": "https://maps.google.com/?q=braids+nails+Koh+Samui+Chaweng",
+    "score": "לבדיקה",
+    "tags": [],
+    "images": [],
+    "hours": "",
+    "phone": "",
+    "destination": "koh_samui"
+  }
+];
+  </script>
+  <script src="./app.js"></script>
 </body>
 </html>
