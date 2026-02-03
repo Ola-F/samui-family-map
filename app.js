@@ -4,7 +4,6 @@
 
   const TAG_LABELS = {
     ac: "ממוזג",
-    stroller: "מתאים לעגלה",
     water: "מים",
     day_pass: "Day Pass",
     drive_under_20: "עד 20 ד׳ נסיעה",
@@ -16,7 +15,7 @@
 }
   ;
 
-  const TAG_ORDER = ["ac","stroller","water","drive_under_20","drive_over_20"];
+  const TAG_ORDER = ["ac","water","drive_under_20","drive_over_20"];
 
   const elSearch = document.getElementById("search");
   const elCategory = document.getElementById("category");
